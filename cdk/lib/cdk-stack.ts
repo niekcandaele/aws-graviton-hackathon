@@ -43,7 +43,7 @@ export class CdkStack extends cdk.Stack {
     bucket.addEventNotification(s3.EventType.OBJECT_CREATED, new SqsDestination(queue))
 
     const queueProcessor = new ecs_patterns.QueueProcessingFargateService(this, "MyQueueProcessingFargateService", {
-      image: ecs.ContainerImage.fromRegistry("hello-world"),
+      image: ecs.ContainerImage.fromRegistry("ghcr.io/niekcandaele/aws-graviton-hackathon:latest"),
       cluster,
       queue,
       minScalingCapacity: 0,
