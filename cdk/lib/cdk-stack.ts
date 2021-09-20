@@ -1,10 +1,8 @@
 import * as apigateway from '@aws-cdk/aws-apigateway';
 import { ClusterParameterGroup, DatabaseCluster } from '@aws-cdk/aws-docdb';
 import * as ec2 from '@aws-cdk/aws-ec2';
-import * as ecr from '@aws-cdk/aws-ecr';
 import * as ecs from '@aws-cdk/aws-ecs';
 import * as ecs_patterns from '@aws-cdk/aws-ecs-patterns';
-import * as iam from '@aws-cdk/aws-iam';
 import * as lambda from '@aws-cdk/aws-lambda';
 import * as s3 from '@aws-cdk/aws-s3';
 import { SqsDestination } from '@aws-cdk/aws-s3-notifications';
@@ -12,14 +10,13 @@ import * as sqs from '@aws-cdk/aws-sqs';
 import * as cdk from '@aws-cdk/core';
 import * as core from '@aws-cdk/core';
 
+import { ECRStack } from './ECR';
+
 export class CdkStack extends cdk.Stack {
   constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
 
-    const githubUser = new iam.User(this, 'githubUser');
-    const repository = new ecr.Repository(this, 'Repository');
-    repository.addLifecycleRule({maxImageCount: 3})
-    repository.grantPullPush(githubUser)
+    const ECRRepos = new ECRStack(this, 'ECRStack')
 
     const bucket = new s3.Bucket(this, 'graviton-hackathon-demos', {
       versioned: true,
@@ -50,7 +47,7 @@ export class CdkStack extends cdk.Stack {
     bucket.addEventNotification(s3.EventType.OBJECT_CREATED, new SqsDestination(queue))
 
     const queueProcessor = new ecs_patterns.QueueProcessingFargateService(this, "MyQueueProcessingFargateService", {
-      image: ecs.ContainerImage.fromEcrRepository(repository, 'latest'),
+      image: ecs.ContainerImage.fromEcrRepository(ECRRepos.tmpContainerRepository, 'latest'),
       cluster,
       queue,
     })
