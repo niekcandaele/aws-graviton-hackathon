@@ -5,9 +5,8 @@ on:
 
 env:
   AWS_REGION: eu-west-1                   
-  ECR_REPOSITORY: cdkstack-repository22e53bbd-atbsncjuvqsh                                                         
-  CONTAINER_NAME: temp-container 
-
+  TMP_CONTAINER_ECR_REPOSITORY: cdkstack-ecrstacktmpcontainerrepositoryb4d3e0e4-b7wf9komyxkl                                                       
+  FACEIT_SCRAPER_ECR_REPOSITORY: cdkstack-ecrstackfaceitscraperrepositoryfabd3644-fi1nd84wqlkb                                                      
 jobs:
   temp-container:
     runs-on: ubuntu-latest
@@ -26,7 +25,7 @@ jobs:
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@aaf69d68aa3fb14c1d5a6be9ac61fe15b48453a2
 
-      - name: Build, tag, and push image to Amazon ECR
+      - name: Build, tag, and push temp container image to Amazon ECR
         id: build-image
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
@@ -35,6 +34,19 @@ jobs:
           # Build a docker container and
           # push it to ECR so that it can
           # be deployed to ECS.
-          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG temp-container
-          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-          echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
+          docker build -t $ECR_REGISTRY/$TMP_CONTAINER_ECR_REPOSITORY:$IMAGE_TAG temp-container
+          docker push $ECR_REGISTRY/$TMP_CONTAINER_ECR_REPOSITORY:$IMAGE_TAG
+          echo "::set-output name=image::$ECR_REGISTRY/$TMP_CONTAINER_ECR_REPOSITORY:$IMAGE_TAG"
+
+      - name: Build, tag, and push faceit scraper image to Amazon ECR
+        id: build-image
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          IMAGE_TAG: latest
+        run: |
+          # Build a docker container and
+          # push it to ECR so that it can
+          # be deployed to ECS.
+          docker build -t $ECR_REGISTRY/$FACEIT_SCRAPER_ECR_REPOSITORY:$IMAGE_TAG faceit-scraper
+          docker push $ECR_REGISTRY/$FACEIT_SCRAPER_ECR_REPOSITORY:$IMAGE_TAG
+          echo "::set-output name=image::$ECR_REGISTRY/$FACEIT_SCRAPER_ECR_REPOSITORY:$IMAGE_TAG"          
