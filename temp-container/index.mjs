@@ -17,6 +17,7 @@ async function main() {
 
   // Get the Amazon SQS Queue URL.
   const queueUrlResult = await sqsClient.send(new GetQueueUrlCommand(queueParams));
+
   // Set the parameters for retrieving the messages in the Amazon SQS Queue.
   var getMessageParams = {
     QueueUrl: queueUrlResult.QueueUrl,
@@ -60,13 +61,13 @@ async function main() {
       ReceiptHandle: message.ReceiptHandle,
     }));
   }
-
 }
 
 
+setInterval(main, 300000)
+
 main()
   .then(() => {
-    process.exit(0)
   })
   .catch(e => {
     console.error(e)
