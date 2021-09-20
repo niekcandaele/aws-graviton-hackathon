@@ -8,6 +8,8 @@ async function main() {
   const sqsClient = new SQS({ region: 'eu-west-1' })
   const s3Client = new S3Client({ region: 'eu-west-1' })
 
+  console.log(`Using queue ${queueName} and bucket ${bucketName}`);
+
   const queueParams = {
     QueueName: queueName,
     Attributes: {
