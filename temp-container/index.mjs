@@ -1,10 +1,10 @@
 import { DeleteObjectCommand, S3, S3Client } from '@aws-sdk/client-s3';
 import { DeleteMessageCommand, GetQueueUrlCommand, ReceiveMessageCommand, SQS, SQSClient } from '@aws-sdk/client-sqs';
 
-const queueName = process.env.QUEUE
-const bucketName = process.env.BUCKET
 
 async function main() {
+  const queueName = process.env.QUEUE
+  const bucketName = process.env.BUCKET
   const sqsClient = new SQS({ region: 'eu-west-1' })
   const s3Client = new S3Client({ region: 'eu-west-1' })
 
