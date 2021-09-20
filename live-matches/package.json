@@ -1,0 +1,19 @@
+{
+  "name": "live-matches",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "csgo": "^1.5.15",
+    "dotenv": "^10.0.0",
+    "long": "^3.2.0",
+    "steam": "^1.4.1",
+    "uuid": "^8.3.2"
+  }
+}

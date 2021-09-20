@@ -1,0 +1,52 @@
+CS_App_Lifetime_Gamestats: Recording WatchLiveMatch 
+**** Unable to localize '#GenericConfirmText_Label' on panel descendant of 'MMStatus'
+Refreshing ping measurements
+SDR RelayNetworkStatus:  avail=OK  config=OK  anyrelay=OK   (Refreshing ping measurements)
+Cluster 'sto' has a selection penalty of 2ms for load balancing purposes.  (As per sto#157 (162.254.198.133:27020)).
+Ping measurement completed
+Ping location: ams=14+1,fra=19+1,lhr=19+1,par=24+2,vie=48+4/31+1,sto=33+5/34+1,sto2=38+3/34+1,waw=40+4/35+1,mad=36+3,iad=97+9/100+2,sgp=281+28/195+14,gru=241+24/244+1
+SDR RelayNetworkStatus:  avail=OK  config=OK  anyrelay=OK   (Refreshing ping measurements)
+CS_App_Lifetime_Gamestats: Recording WatchLiveMatch 
+**** Unable to localize '#GenericConfirmText_Label' on panel descendant of 'MMStatus'
+Received Steam datagram ticket for server steamid:90151361748101121 vport 3. tv_src_steam_id=90151361530294275 match_id=3504858448586080533
+Warning:  cl_decryptdata_key_pub = '2E28801F9E15943F' is infinite, clamping value.
+**** Unable to localize '#matchdraft_phase_action_wait' on panel 'id-map-draft-phase-wait'
+**** Unable to localize '#DemoPlayback_Restart' on panel descendant of 'HudDemoPlayback'
+**** Unable to localize '#DemoPlayback_Back' on panel descendant of 'HudDemoPlayback'
+**** Unable to localize '#DemoPlayback_Pause' on panel descendant of 'HudDemoPlayback'
+**** Unable to localize '#DemoPlayback_Slow' on panel descendant of 'HudDemoPlayback'
+**** Unable to localize '#DemoPlayback_Play' on panel descendant of 'HudDemoPlayback'
+**** Unable to localize '#DemoPlayback_Fast' on panel descendant of 'HudDemoPlayback'
+**** Unable to localize '#DemoPlayback_Next' on panel descendant of 'HudDemoPlayback'
+**** Unable to localize '#Panorama_CSGO_Spray_Cursor_Hint' on panel 'RosettaInfoText'
+ChangeGameUIState: CSGO_GAME_UI_STATE_MAINMENU -> CSGO_GAME_UI_STATE_LOADINGSCREEN
+Connecting to public(=[A:1:2500028417:18479]:3) ...
+Started tracking Steam Net Connection to =[A:1:2500028417:18479]:3, handle ae1d0f74
+[#2921140084 SDR server steamid:90151361748101121 vport 3] Requesting session from ams#123 (155.133.248.52:27029).  Ping = 21 = 15+6 (front+back).
+[#2921140084 SDR server steamid:90151361748101121 vport 3] Requesting session from fra#181 (162.254.197.36:27057).  Ping = 21 = 21+0 (front+back).
+[#2921140084 SDR server steamid:90151361748101121 vport 3] Selecting ams#123 (155.133.248.52:27029) as primary.  (Ping = 21 = 15+6+0 (front+interior+remote).)
+[#2921140084 SDR server steamid:90151361748101121 vport 3] Selecting fra#181 (162.254.197.36:27057) as backup #1 (Ping = 21 = 21+0+0 (front+interior+remote).)
+[#2921140084 SDR server steamid:90151361748101121 vport 3] connected
+Retrying public(=[A:1:2500028417:18479]:3) ...
+Server using '<none>' lobbies, requiring pw yes, lobby id ffffffffffffffff
+Associating NetChan CLIENT (=[A:1:2500028417:18479]:3) with Steam Net Connection handle ae1d0f74
+Connected to =[A:1:2500028417:18479]:3
+
+Counter-Strike: Global Offensive
+Map: de_mirage
+Players: 0 (0 bots) / 64 humans
+Build: 8234
+Server Number: 1
+
+SignalXWriteOpportunity(3)
+Error reading file resource/overviews/de_mirage_radar_spectate.dds.
+ChangeGameUIState: CSGO_GAME_UI_STATE_LOADINGSCREEN -> CSGO_GAME_UI_STATE_INGAME
+ChangeGameUIState: CSGO_GAME_UI_STATE_INGAME -> CSGO_GAME_UI_STATE_INGAME
+CCSGO_BlurTarget - Unable to find panel with the given id "sliding-panel--TERRORIST"! Panel is possibly created dynamically.
+CCSGO_BlurTarget - Unable to find panel with the given id "sliding-panel--CT"! Panel is possibly created dynamically.
+0:  Reinitialized 2 predictable entities
+*DEAD* bukii24‎ : bot
+*DEAD* bukii24‎ : aug
+Resource materials/panorama/images/icons/equipment/.svg failed to load.
+*DEAD* Möölin‎ : smelly
+Achievements disabled: demo playing.
