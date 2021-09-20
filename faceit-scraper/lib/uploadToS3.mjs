@@ -2,20 +2,16 @@ import { S3Client } from '@aws-sdk/client-s3';
 import { Upload } from '@aws-sdk/lib-storage';
 import axios from 'axios';
 
-
 const client = new S3Client({ region: "eu-west-1" });
 
-const KEY_REGEX = /csgo\/(.+\.dem\.gz)/i
-
-export async function uploadToS3(demoUrl) {
+export async function uploadToS3({demoUrl, id}) {
   const started = Date.now()
   console.log(`Uploading ${demoUrl} to S3`);
-  const Key = KEY_REGEX.exec(demoUrl)[1];
   const readStream = await getReadStream(demoUrl);
 
   const target = { 
     Bucket: process.env.BUCKET, 
-    Key, 
+    Key: `faceit/${id}`, 
     Body: readStream
   };
   const uploadReq = new Upload({

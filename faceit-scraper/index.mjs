@@ -2,11 +2,13 @@ import dotenv from 'dotenv';
 import { writeFile } from 'fs/promises';
 
 import { getMatchesForHub } from './lib/getHub.mjs';
+import { getMongoose } from './lib/models/index.mjs';
 import { uploadToS3 } from './lib/uploadToS3.mjs';
 
 dotenv.config();
 
 async function main() {
+  const { Match } = await getMongoose();
   const watchedHubs = process.env.WATCHED_FACEIT_HUBS.split(',');
 
   const results = await Promise.all(watchedHubs.map(getMatchesForHub));
@@ -19,9 +21,14 @@ async function main() {
         return null;
       }
 
+      const team1 = match.teams.faction1.roster.map(faceitFactionPlayer)
+      const team2 = match.teams.faction2.roster.map(faceitFactionPlayer)
+
       const matchData = {
         id: match.match_id,
-        demoUrl: match.demo_url[0]
+        demoUrl: match.demo_url[0],
+        team1,
+        team2,
       }
       return matchData;
     }).filter(Boolean)
@@ -29,8 +36,24 @@ async function main() {
 
   for (const hub of hubMatches) {
     console.log('Start handling of a new hub');
-    await Promise.all(hub.map(matchInfo => {
-      return uploadToS3(matchInfo.demoUrl)
+
+    await Promise.all(hub.map(async matchInfo => {
+      const match = new Match({
+        id: matchInfo.id,
+        demoUrl: matchInfo.demoUrl,
+        type: 'faceit',
+        team1: matchInfo.team1,
+        team2: matchInfo.team2,
+      });
+      try {
+        await match.save()
+      } catch (error) {
+        if (!error.message.includes('E11000 duplicate')) {
+          throw error
+        }
+        return;
+      }
+      return uploadToS3(matchInfo)
     }))
   }
 
@@ -38,8 +61,21 @@ async function main() {
 
 
 main()
-.then()
-.catch(e => {
-  console.error(e)
-  process.exit(1)
-})
+  .then()
+  .catch(e => {
+    if (e.isAxiosError) {
+      console.error(e.response.status)
+    } else {
+      console.error(e)
+    }
+
+    process.exit(1)
+  })
+
+
+function faceitFactionPlayer(p) {
+  return {
+    steamId: p.game_player_id,
+    rank: p.game_skill_level
+  }
+}
