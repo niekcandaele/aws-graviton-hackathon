@@ -1,7 +1,8 @@
 import { DeleteObjectCommand, S3, S3Client } from '@aws-sdk/client-s3';
 import { DeleteMessageCommand, GetQueueUrlCommand, ReceiveMessageCommand, SQS, SQSClient } from '@aws-sdk/client-sqs';
 
-const queueName = 'CdkStack-demoqueue674D5754-14ELD100UO0YE';
+const queueName = process.env.QUEUE
+const bucketName = process.env.BUCKET
 
 async function main() {
   const sqsClient = new SQS({ region: 'eu-west-1' })
@@ -49,7 +50,7 @@ async function main() {
     // *******************************************
 
     const deleteCommand = new DeleteObjectCommand({
-      Bucket: 'cdkstack-gravitonhackathondemos280c5b93-ahk6xcrnq0yo',
+      Bucket: bucketName,
       Key: key,
     });
 
