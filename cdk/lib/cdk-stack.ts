@@ -1,5 +1,5 @@
 import * as apigateway from '@aws-cdk/aws-apigateway';
-import { DatabaseCluster } from '@aws-cdk/aws-docdb';
+import { ClusterParameterGroup, DatabaseCluster } from '@aws-cdk/aws-docdb';
 import * as ec2 from '@aws-cdk/aws-ec2';
 import * as ecr from '@aws-cdk/aws-ecr';
 import * as ecs from '@aws-cdk/aws-ecs';
@@ -79,6 +79,12 @@ export class CdkStack extends cdk.Stack {
 
     api.root.addMethod("POST", uploadDemoIntegration);
 
+    const parametergroup = new ClusterParameterGroup(this, 'docdbParameterGroup', {
+      family: "docdb4.0",
+      parameters: {
+        tls: 'disabled'
+      }
+    })
 
     const databaseCluster = new DatabaseCluster(this, 'Database', {
       masterUser: {
@@ -89,12 +95,10 @@ export class CdkStack extends cdk.Stack {
       vpcSubnets: {
         subnetType: ec2.SubnetType.PUBLIC,
       },
-      vpc
+      vpc,
+      parameterGroup: parametergroup,
     });
 
     databaseCluster.connections.allowDefaultPortFromAnyIpv4()
-
-
-
   }
 }
