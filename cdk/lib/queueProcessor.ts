@@ -38,7 +38,8 @@ export class QueueProcessor extends Construct {
         BUCKET: bucket.bucketName,
         QUEUE: queue.queueName
       },
-      minScalingCapacity: 1,
+      minScalingCapacity: 0,
+      maxScalingCapacity: 0
     })
 
     bucket.grantReadWrite(queueProcessor.taskDefinition.taskRole);

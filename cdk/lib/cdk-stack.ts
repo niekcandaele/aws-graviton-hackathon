@@ -5,6 +5,7 @@ import * as cdk from '@aws-cdk/core';
 import * as core from '@aws-cdk/core';
 import * as dotenv from 'dotenv';
 
+import { API } from './api';
 import { DemoUpload } from './demoUploadLambda';
 import { ECRStack } from './ECR';
 import { FaceitScraper } from './faceitScraper';
@@ -42,6 +43,7 @@ export class CdkStack extends cdk.Stack {
     const demoUpload = new DemoUpload(this, 'DemoUpload', {bucket})
     const mongo = new Mongo(this, 'Mongo', {vpc})
     const faceitScraper = new FaceitScraper(this, 'FaceitScraper', {ECRRepos,bucket,cluster})
+    const api = new API(this, 'API', {vpc})
 
   }
 }
