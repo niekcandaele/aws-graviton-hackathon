@@ -42,7 +42,15 @@ async function main() {
   for (const hub of hubMatches) {
     console.log(`Start handling of a new hub, ${hubMatches.length} matches`);
 
-    await Promise.all(hub.map(async matchInfo => {
+    for (const matchInfo of hub) {
+      try {
+        await uploadToS3(matchInfo);
+      } catch (error) {
+        console.error(`Error uploading from Faceit to S3`);
+        console.error(error)
+        continue;
+      }
+
       const match = new Match({
         id: matchInfo.id,
         demoUrl: matchInfo.demoUrl,
@@ -50,6 +58,7 @@ async function main() {
         team1: matchInfo.team1,
         team2: matchInfo.team2,
       });
+
       try {
         return await match.save()
       } catch (error) {
@@ -58,10 +67,8 @@ async function main() {
         }
         return;
       }
-    }))
 
-    for (const matchInfo of hub) {
-      await uploadToS3(matchInfo)
+
     }
   }
 
