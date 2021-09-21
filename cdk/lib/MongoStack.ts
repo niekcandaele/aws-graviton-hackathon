@@ -35,6 +35,6 @@ export class Mongo extends Construct{
       parameterGroup: parametergroup,
     });
 
-    databaseCluster.connections.allowDefaultPortFromAnyIpv4()
+    databaseCluster.connections.allowDefaultPortFromAnyIpv4();
   }
 }
