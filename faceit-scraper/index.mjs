@@ -1,3 +1,4 @@
+import memwatch from '@airbnb/node-memwatch';
 import dotenv from 'dotenv';
 
 import { getMatchesForHub } from './lib/getHub.mjs';
@@ -5,6 +6,11 @@ import { getMongoose } from './lib/models/index.mjs';
 import { uploadToS3 } from './lib/uploadToS3.mjs';
 
 dotenv.config();
+
+memwatch.on('stats', function(stats) { 
+  // Display total heap size in megabytes
+  console.log(`Total heap size: ${stats.total_heap_size / 1024 / 1024} MB`);
+ });
 
 async function main() {
   const { Match } = await getMongoose();
