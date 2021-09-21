@@ -64,6 +64,7 @@ main()
   .then()
   .catch(e => {
     if (e.isAxiosError) {
+      console.error(`Axios error for ${e.path}`)
       console.error(e.response.status)
     } else {
       console.error(e)
