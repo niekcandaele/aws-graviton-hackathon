@@ -71,6 +71,8 @@ async function main() {
   }
 }
 
+setInterval(main, 300000)
+
 main()
   .then(() => {
   })
