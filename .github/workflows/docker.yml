@@ -5,8 +5,8 @@ on:
 
 env:
   AWS_REGION: eu-west-1                   
-  TMP_CONTAINER_ECR_REPOSITORY: cdkstack-ecrstacktmpcontainerrepositoryb4d3e0e4-b7wf9komyxkl                                                       
-  FACEIT_SCRAPER_ECR_REPOSITORY: cdkstack-ecrstackfaceitscraperrepositoryfabd3644-fi1nd84wqlkb                                                      
+  TMP_CONTAINER_ECR_REPOSITORY: cdkstack-ecrstacktmpcontainerrepositoryb4d3e0e4-petsdaym712x                                                      
+  FACEIT_SCRAPER_ECR_REPOSITORY: cdkstack-ecrstackfaceitscraperrepositoryfabd3644-femxevoyv7jc                                                      
 jobs:
   temp-container:
     runs-on: ubuntu-latest
