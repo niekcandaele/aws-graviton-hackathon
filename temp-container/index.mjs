@@ -41,6 +41,11 @@ async function main() {
 
   for (const message of data.Messages) {
     const body = JSON.parse(message.Body);
+    console.log(body);
+    if (!body.Record) {
+      continue;
+    }
+
     const key = body.Records[0].s3.object.key;
 
 
