@@ -40,7 +40,7 @@ async function main() {
   })
 
   for (const hub of hubMatches) {
-    console.log('Start handling of a new hub');
+    console.log(`Start handling of a new hub, ${hubMatches.length} matches`);
 
     await Promise.all(hub.map(async matchInfo => {
       const match = new Match({
@@ -51,15 +51,18 @@ async function main() {
         team2: matchInfo.team2,
       });
       try {
-        await match.save()
+        return await match.save()
       } catch (error) {
         if (!error.message.includes('E11000 duplicate')) {
           throw error
         }
         return;
       }
-      return uploadToS3(matchInfo)
     }))
+
+    for (const matchInfo of hub) {
+      await uploadToS3(matchInfo)
+    }
   }
 
 }
