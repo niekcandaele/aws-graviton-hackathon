@@ -85,5 +85,3 @@ function faceitFactionPlayer(p) {
     rank: p.game_skill_level
   }
 }
-
-setInterval(main, 1000 * 60 * 10)
