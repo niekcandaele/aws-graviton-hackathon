@@ -1,5 +1,4 @@
 import dotenv from 'dotenv';
-import { writeFile } from 'fs/promises';
 
 import { getMatchesForHub } from './lib/getHub.mjs';
 import { getMongoose } from './lib/models/index.mjs';
