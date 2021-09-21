@@ -5,6 +5,7 @@ import { DeleteMessageCommand, GetQueueUrlCommand, ReceiveMessageCommand, SQS, S
 async function main() {
   const queueName = process.env.QUEUE
   const bucketName = process.env.BUCKET
+  const event = process.env.EVENT
   const sqsClient = new SQS({ region: 'eu-west-1' })
   const s3Client = new S3Client({ region: 'eu-west-1' })
 
@@ -70,8 +71,6 @@ async function main() {
     }));
   }
 }
-
-setInterval(main, 300000)
 
 main()
   .then(() => {
