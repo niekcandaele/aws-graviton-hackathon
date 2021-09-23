@@ -1,14 +1,15 @@
 import * as apigateway from '@aws-cdk/aws-apigateway';
 import { Vpc } from '@aws-cdk/aws-ec2';
 import * as lambda from '@aws-cdk/aws-lambda';
+import { SqsEventSource } from '@aws-cdk/aws-lambda-event-sources';
 import { Bucket } from '@aws-cdk/aws-s3';
 import { Queue } from '@aws-cdk/aws-sqs';
 import * as cdk from '@aws-cdk/core';
 import { Construct } from '@aws-cdk/core';
 
-
 interface IAPIProps {
-  vpc: Vpc
+  vpc: Vpc,
+  queue: Queue
 }
 
 export class API extends Construct{
@@ -38,6 +39,12 @@ export class API extends Construct{
     });
     const stats = api.root.addResource("stats");
     stats.addMethod("GET", statsLambdaIntegration);
+
+
+
+
+
+
   }
 
 

@@ -39,11 +39,11 @@ export class CdkStack extends cdk.Stack {
     
     
     const ECRRepos = new ECRStack(this, 'ECRStack')
-    const queueProcessor = new QueueProcessor(this, 'QueueProcessor', {ECRRepos,bucket,cluster})
+    const queueProcessor = new QueueProcessor(this, 'QueueProcessor', {ECRRepos,bucket,cluster, vpc})
     const demoUpload = new DemoUpload(this, 'DemoUpload', {bucket})
     const mongo = new Mongo(this, 'Mongo', {vpc})
     const faceitScraper = new FaceitScraper(this, 'FaceitScraper', {ECRRepos,bucket,cluster})
-    const api = new API(this, 'API', {vpc})
+    const api = new API(this, 'API', {vpc, queue: queueProcessor.queue})
 
   }
 }

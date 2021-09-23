@@ -35,7 +35,7 @@ export class FaceitScraper extends Construct {
       throw new Error('Must define the Mongo connection URI');
     }
 
-    const scheduledFargateTask = new ScheduledFargateTask(this, 'FaceitScraper', {
+    const scheduledFargateTask = new ScheduledFargateTask(this, 'Faceit-scraper', {
       cluster,
       scheduledFargateTaskImageOptions: {
         image: ecs.ContainerImage.fromEcrRepository(ECRRepos.faceitScraperRepository, 'latest'),
