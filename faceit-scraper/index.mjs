@@ -67,12 +67,11 @@ async function main() {
         }
         return;
       }
-
-
     }
   }
-
 }
+
+setInterval(main, 30000);
 
 
 main()
