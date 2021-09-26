@@ -27,7 +27,7 @@ export class Mongo extends Construct{
         username: 'demos'
       },
       // Cant run this on Graviton instances 😢
-      instanceType: ec2.InstanceType.of(ec2.InstanceClass.R5, ec2.InstanceSize.LARGE),
+      instanceType: ec2.InstanceType.of(ec2.InstanceClass.T3, ec2.InstanceSize.MEDIUM),
       vpcSubnets: {
         subnetType: ec2.SubnetType.PUBLIC,
       },
