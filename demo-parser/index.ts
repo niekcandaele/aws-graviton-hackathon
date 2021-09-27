@@ -49,13 +49,14 @@ async function main() {
     }
 
     const body = JSON.parse(message.Body);
-    console.log(body);
     if (!body.Record) {
       continue;
     }
 
     const key = body.Records[0].s3.object.key;
 
+    console.log(`Handling key ${key}`);
+    
 
     const {Body} = await s3Client.send(new GetObjectCommand({
       Bucket: bucketName,
@@ -81,6 +82,9 @@ async function main() {
       QueueUrl: queueUrlResult.QueueUrl,
       ReceiptHandle: message.ReceiptHandle,
     }));
+
+    console.log(`ACK message ${message.MessageId}`)
+
   }
 }
 
