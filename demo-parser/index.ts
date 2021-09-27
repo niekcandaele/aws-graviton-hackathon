@@ -1,6 +1,7 @@
 import { DeleteObjectCommand, GetObjectCommand, S3, S3Client } from '@aws-sdk/client-s3';
 import { DeleteMessageCommand, GetQueueUrlCommand, ReceiveMessageCommand, SQS, SQSClient } from '@aws-sdk/client-sqs';
 import dotenv from 'dotenv';
+import { Readable } from 'stream';
 import zlib from 'zlib';
 
 import Demo from './demo';
@@ -66,13 +67,36 @@ async function main() {
 
     console.log(`Handling key ${key}`);
 
+    let s3File: ReadableStream | Readable | Blob | null = null;
 
-    const { Body } = await s3Client.send(new GetObjectCommand({
-      Bucket: bucketName,
-      Key: key
-    }))
+    try {
+      const { Body } = await s3Client.send(new GetObjectCommand({
+        Bucket: bucketName,
+        Key: key
+      }))
+      if (!Body) {
+        await ackMessage(message);
+        continue;
+      }
 
-    const compressedBuffer = await streamToBuffer(Body)
+      s3File = Body
+    } catch (error) {
+      console.log(`Error while downloading file from S3: ${error}`);
+      // @ts-expect-error error is unknown 
+      if (error.message === 'NoSuchKey') {
+        // Demo isnt in our S3 bucket, ack the message and move on
+        await ackMessage(message);
+        continue;
+      }
+    }
+
+
+    if (!s3File) {
+      await ackMessage(message);
+      continue;
+    }
+
+    const compressedBuffer = await streamToBuffer(s3File)
 
     try {
       const decompressed = await decompress(compressedBuffer)
