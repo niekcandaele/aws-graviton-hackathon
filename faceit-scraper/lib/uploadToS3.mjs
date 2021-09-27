@@ -57,7 +57,6 @@ async function objectExists(id) {
   const command = new HeadObjectCommand({Bucket: process.env.BUCKET,Key: getKey(id)})
   try {
     const response = await client.send(command)
-    console.log(response);
     return true
   } catch (error) {
     if (error.message === 'NotFound') {

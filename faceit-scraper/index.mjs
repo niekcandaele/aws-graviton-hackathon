@@ -1,13 +1,11 @@
 import dotenv from 'dotenv';
 
 import { getMatchesForHub } from './lib/getHub.mjs';
-import { getMongoose } from './lib/models/index.mjs';
 import { uploadToS3 } from './lib/uploadToS3.mjs';
 
 dotenv.config();
 
 async function main() {
- // const { Match } = await getMongoose();
   const watchedHubs = process.env.WATCHED_FACEIT_HUBS.split(',');
 
   const results = await Promise.all(watchedHubs.map(getMatchesForHub));
@@ -45,6 +43,8 @@ async function main() {
         continue;
       }
     }
+
+    console.log(`End handling hub`)
   }
 }
 
