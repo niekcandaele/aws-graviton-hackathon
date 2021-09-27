@@ -5,8 +5,8 @@ on:
 
 env:
   AWS_REGION: eu-west-1                   
-  TMP_CONTAINER_ECR_REPOSITORY: cdkstack-ecrstacktmpcontainerrepositoryb4d3e0e4-petsdaym712x                                                      
-  FACEIT_SCRAPER_ECR_REPOSITORY: cdkstack-ecrstackfaceitscraperrepositoryfabd3644-femxevoyv7jc                                                      
+  TMP_CONTAINER_ECR_REPOSITORY: cdkstack-ecrstacktmpcontainerrepositoryb4d3e0e4-tv7wqfs40umm                                                      
+  FACEIT_SCRAPER_ECR_REPOSITORY: cdkstack-ecrstackfaceitscraperrepositoryfabd3644-dnutmgz5qbim                                                    
 jobs:
   temp-container:
     runs-on: ubuntu-latest
@@ -33,7 +33,7 @@ jobs:
           # Build a docker container and
           # push it to ECR so that it can
           # be deployed to ECS.
-          docker build -t $ECR_REGISTRY/$TMP_CONTAINER_ECR_REPOSITORY:$IMAGE_TAG temp-container
+          docker build -t $ECR_REGISTRY/$TMP_CONTAINER_ECR_REPOSITORY:$IMAGE_TAG demo-parser
           docker push $ECR_REGISTRY/$TMP_CONTAINER_ECR_REPOSITORY:$IMAGE_TAG
 
       - name: Build, tag, and push faceit scraper image to Amazon ECR

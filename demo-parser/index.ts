@@ -1,5 +1,8 @@
-import { DeleteObjectCommand, S3, S3Client } from '@aws-sdk/client-s3';
+import { DeleteObjectCommand, GetObjectCommand, S3, S3Client } from '@aws-sdk/client-s3';
 import { DeleteMessageCommand, GetQueueUrlCommand, ReceiveMessageCommand, SQS, SQSClient } from '@aws-sdk/client-sqs';
+
+import Demo from './demo';
+import { Match } from './models/Match';
 
 
 async function main() {
@@ -44,6 +47,10 @@ async function main() {
   }
 
   for (const message of data.Messages) {
+    if (!message.Body) {
+      continue;
+    }
+
     const body = JSON.parse(message.Body);
     console.log(body);
     if (!body.Record) {
@@ -53,14 +60,19 @@ async function main() {
     const key = body.Records[0].s3.object.key;
 
 
-    // *******************************************
-    // TODO:
-    // Download the file
-    // Do the number crunching 
-    // Send the numbers to database :)
-    // *******************************************
+    const {Body} = await s3Client.send(new GetObjectCommand({
+      Bucket: bucketName,
+      Key: key
+    }))
 
-/*     const deleteCommand = new DeleteObjectCommand({
+    const buffer = await streamToBuffer(Body)
+
+    const demo = new Demo(buffer);
+    const match = new Match();
+    await demo.handle(match);
+
+
+    const deleteCommand = new DeleteObjectCommand({
       Bucket: bucketName,
       Key: key,
     });
@@ -71,7 +83,7 @@ async function main() {
     await sqsClient.send(new DeleteMessageCommand({
       QueueUrl: queueUrlResult.QueueUrl,
       ReceiptHandle: message.ReceiptHandle,
-    })); */
+    }));
   }
 }
 
@@ -84,3 +96,13 @@ main()
     console.error(e)
     process.exit(1)
   })
+
+
+function streamToBuffer (stream): Promise<Buffer> {
+  return new Promise((resolve, reject) => {
+    const chunks: any[] = []
+    stream.on('data', (chunk) => chunks.push(chunk))
+    stream.on('end', () => resolve(Buffer.concat(chunks)))
+    stream.on('error', reject)
+  })
+}

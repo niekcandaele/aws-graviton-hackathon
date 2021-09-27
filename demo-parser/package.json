@@ -1,0 +1,29 @@
+{
+  "name": "temp-container",
+  "version": "1.0.0",
+  "description": "Just a temporary container to read from SQS while the real thing is  still in development.",
+  "main": "index.js",
+  "scripts": {
+    "test": "ts-node data/test.ts",
+    "build": "tsc",
+    "start": "node ./build/index.js",
+    "dev": "nodemon"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.32.0",
+    "@aws-sdk/client-sqs": "^3.32.0",
+    "demofile": "^2.1.0",
+    "dotenv": "^10.0.0",
+    "mongoose": "^6.0.7"
+  },
+  "devDependencies": {
+    "@types/dotenv": "^8.2.0",
+    "@types/node": "^16.10.1",
+    "nodemon": "^2.0.13",
+    "ts-node": "^10.2.1",
+    "typescript": "^4.4.3"
+  }
+}

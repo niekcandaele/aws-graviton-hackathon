@@ -1,5 +1,7 @@
 import * as ec2 from '@aws-cdk/aws-ec2';
+import { FlowLog, FlowLogDestination, FlowLogResourceType } from '@aws-cdk/aws-ec2';
 import * as ecs from '@aws-cdk/aws-ecs';
+import { LogGroup, RetentionDays } from '@aws-cdk/aws-logs';
 import * as s3 from '@aws-cdk/aws-s3';
 import * as cdk from '@aws-cdk/core';
 import * as core from '@aws-cdk/core';
@@ -26,8 +28,17 @@ export class CdkStack extends cdk.Stack {
     
     const vpc = new ec2.Vpc(this, "MyVpc", {
       maxAzs: 3, // Default is all AZs in region,
+      natGateways: 1
     });
     
+    const logGroupFlowLog = new LogGroup(this, 'flowlogLogGroup', {
+      retention: RetentionDays.ONE_WEEK
+    })
+
+    vpc.addFlowLog('FlowLog', {
+      destination: FlowLogDestination.toCloudWatchLogs(logGroupFlowLog)
+    })
+
     const cluster = new ecs.Cluster(this, "MyCluster", {
       vpc: vpc,
       capacity: {
