@@ -7,7 +7,7 @@ import { uploadToS3 } from './lib/uploadToS3.mjs';
 dotenv.config();
 
 async function main() {
-  const { Match } = await getMongoose();
+ // const { Match } = await getMongoose();
   const watchedHubs = process.env.WATCHED_FACEIT_HUBS.split(',');
 
   const results = await Promise.all(watchedHubs.map(getMatchesForHub));
