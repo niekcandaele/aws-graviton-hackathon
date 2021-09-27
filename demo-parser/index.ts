@@ -1,11 +1,14 @@
 import { DeleteObjectCommand, GetObjectCommand, S3, S3Client } from '@aws-sdk/client-s3';
 import { DeleteMessageCommand, GetQueueUrlCommand, ReceiveMessageCommand, SQS, SQSClient } from '@aws-sdk/client-sqs';
+import dotenv from 'dotenv';
 
 import Demo from './demo';
 import { Match } from './models/Match';
 
+dotenv.config()
 
 async function main() {
+
   const queueName = process.env.QUEUE
   const bucketName = process.env.BUCKET
 
@@ -52,7 +55,7 @@ async function main() {
     }
 
     const body = JSON.parse(message.Body);
-    if (!body.Record) {
+    if (!body.Records) {
       continue;
     }
 
