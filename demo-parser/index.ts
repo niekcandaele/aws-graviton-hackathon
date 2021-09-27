@@ -108,7 +108,7 @@ setInterval(() => main()
   .catch(e => {
     console.error(e)
     process.exit(1)
-  }), 30000);
+  }), 1000 * 60 * 60);
 
 main()
   .then(() => {
