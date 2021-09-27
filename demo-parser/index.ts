@@ -8,14 +8,14 @@ import { Match } from './models/Match';
 
 dotenv.config()
 
+const queueName = process.env.QUEUE
+const bucketName = process.env.BUCKET
+const sqsClient = new SQS({ region: 'eu-west-1' })
+const s3Client = new S3Client({ region: 'eu-west-1' })
+
+let queueUrl
+
 async function main() {
-
-  const queueName = process.env.QUEUE
-  const bucketName = process.env.BUCKET
-
-  const sqsClient = new SQS({ region: 'eu-west-1' })
-  const s3Client = new S3Client({ region: 'eu-west-1' })
-
   console.log(`Using queue ${queueName} and bucket ${bucketName}`);
 
   const queueParams = {
@@ -28,11 +28,11 @@ async function main() {
 
   // Get the Amazon SQS Queue URL.
   const queueUrlResult = await sqsClient.send(new GetQueueUrlCommand(queueParams));
-
+  queueUrl = queueUrlResult.QueueUrl
   // Set the parameters for retrieving the messages in the Amazon SQS Queue.
   var getMessageParams = {
-    QueueUrl: queueUrlResult.QueueUrl,
-    MaxNumberOfMessages: 10,
+    QueueUrl: queueUrl,
+    MaxNumberOfMessages: 50,
     MessageAttributeNames: ["All"],
     VisibilityTimeout: 20,
     WaitTimeSeconds: 20,
@@ -52,11 +52,13 @@ async function main() {
 
   for (const message of data.Messages) {
     if (!message.Body) {
+      await ackMessage(message);
       continue;
     }
 
     const body = JSON.parse(message.Body);
     if (!body.Records) {
+      await ackMessage(message);
       continue;
     }
 
@@ -82,8 +84,6 @@ async function main() {
       console.error(error);
     }
 
-
-
     const deleteCommand = new DeleteObjectCommand({
       Bucket: bucketName,
       Key: key,
@@ -92,13 +92,7 @@ async function main() {
     await s3Client.send(deleteCommand);
     console.log(`Deleted object ${key}`)
 
-    await sqsClient.send(new DeleteMessageCommand({
-      QueueUrl: queueUrlResult.QueueUrl,
-      ReceiptHandle: message.ReceiptHandle,
-    }));
-
-    console.log(`ACK message ${message.MessageId}`)
-
+    await ackMessage(message);
   }
 }
 
@@ -118,6 +112,14 @@ main()
     process.exit(1)
   })
 
+async function ackMessage(message) {
+  await sqsClient.send(new DeleteMessageCommand({
+    QueueUrl: queueUrl,
+    ReceiptHandle: message.ReceiptHandle,
+  }));
+
+  console.log(`ACK message ${message.MessageId}`)
+}
 
 function streamToBuffer(stream): Promise<Buffer> {
   return new Promise((resolve, reject) => {
