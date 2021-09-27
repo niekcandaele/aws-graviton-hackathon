@@ -47,7 +47,7 @@ export class FaceitScraper extends Construct {
           MONGODB_URI: process.env.MONGODB_URI
         }
       },
-      schedule: Schedule.expression('rate(30 minutes)'),
+      schedule: Schedule.expression('rate(4 hours)'),
       platformVersion: ecs.FargatePlatformVersion.LATEST,
     });
 
