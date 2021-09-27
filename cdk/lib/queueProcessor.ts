@@ -54,7 +54,8 @@ export class QueueProcessor extends Construct {
       cluster,
       minScalingCapacity: 1,
       maxScalingCapacity: 1,
-      memoryLimitMiB: 2048
+      memoryLimitMiB: 2048,
+      cpu: 512
     })
 
     bucket.addEventNotification(s3.EventType.OBJECT_CREATED, new SqsDestination(queue))
