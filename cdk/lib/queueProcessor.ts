@@ -53,6 +53,7 @@ export class QueueProcessor extends Construct {
       queue,
       cluster,
       minScalingCapacity: 1,
+      maxScalingCapacity: 1,
       memoryLimitMiB: 2048
     })
 
