@@ -1,6 +1,7 @@
 import { DeleteObjectCommand, GetObjectCommand, S3, S3Client } from '@aws-sdk/client-s3';
 import { DeleteMessageCommand, GetQueueUrlCommand, ReceiveMessageCommand, SQS, SQSClient } from '@aws-sdk/client-sqs';
 import dotenv from 'dotenv';
+import zlib from 'zlib';
 
 import Demo from './demo';
 import { Match } from './models/Match';
@@ -69,11 +70,18 @@ async function main() {
       Key: key
     }))
 
-    const buffer = await streamToBuffer(Body)
+    const compressedBuffer = await streamToBuffer(Body)
 
-    const demo = new Demo(buffer);
-    const match = new Match();
-    await demo.handle(match);
+    try {
+      const decompressed = await decompress(compressedBuffer)
+      const demo = new Demo(decompressed);
+      const match = new Match();
+      await demo.handle(match);
+    } catch (error) {
+      // Let's ignore errors so the rest of the code can still do cleanup
+      console.error(error);
+    }
+
 
 
     const deleteCommand = new DeleteObjectCommand({
@@ -117,5 +125,18 @@ function streamToBuffer(stream): Promise<Buffer> {
     stream.on('data', (chunk) => chunks.push(chunk))
     stream.on('end', () => resolve(Buffer.concat(chunks)))
     stream.on('error', reject)
+  })
+}
+
+
+async function decompress(buffer): Promise<Buffer> {
+  return new Promise((resolve, reject) => {
+    zlib.gunzip(buffer, (e, buffer) => {
+      if (e) {
+        reject(e)
+      } else {
+        resolve(buffer)
+      }
+    })
   })
 }
