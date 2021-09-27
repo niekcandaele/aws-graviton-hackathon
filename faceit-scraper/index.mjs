@@ -48,9 +48,6 @@ async function main() {
   }
 }
 
-setInterval(main, 30000);
-
-
 main()
   .then()
   .catch(e => {
