@@ -44,7 +44,7 @@ async function main() {
   }
 
   console.log(`Received ${data.Messages.length} messages`);
-  
+
 
   for (const message of data.Messages) {
     if (!message.Body) {
@@ -59,9 +59,9 @@ async function main() {
     const key = body.Records[0].s3.object.key;
 
     console.log(`Handling key ${key}`);
-    
 
-    const {Body} = await s3Client.send(new GetObjectCommand({
+
+    const { Body } = await s3Client.send(new GetObjectCommand({
       Bucket: bucketName,
       Key: key
     }))
@@ -91,7 +91,13 @@ async function main() {
   }
 }
 
-setInterval(main, 30000);
+setInterval(() => main()
+  .then(() => {
+  })
+  .catch(e => {
+    console.error(e)
+    process.exit(1)
+  }), 30000);
 
 main()
   .then(() => {
@@ -102,7 +108,7 @@ main()
   })
 
 
-function streamToBuffer (stream): Promise<Buffer> {
+function streamToBuffer(stream): Promise<Buffer> {
   return new Promise((resolve, reject) => {
     const chunks: any[] = []
     stream.on('data', (chunk) => chunks.push(chunk))
