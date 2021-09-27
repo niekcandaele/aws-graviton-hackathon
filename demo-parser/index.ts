@@ -43,6 +43,9 @@ async function main() {
     return;
   }
 
+  console.log(`Received ${data.Messages.length} messages`);
+  
+
   for (const message of data.Messages) {
     if (!message.Body) {
       continue;
