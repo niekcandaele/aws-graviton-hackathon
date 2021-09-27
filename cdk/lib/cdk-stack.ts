@@ -24,6 +24,11 @@ export class CdkStack extends cdk.Stack {
       versioned: true,
       removalPolicy: cdk.RemovalPolicy.DESTROY,
       autoDeleteObjects: true,
+      lifecycleRules: [
+        {
+          expiration: cdk.Duration.days(3),
+        }
+      ]
     });
     
     const vpc = new ec2.Vpc(this, "MyVpc", {
