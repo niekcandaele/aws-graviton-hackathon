@@ -50,23 +50,6 @@ async function main() {
         console.error(error)
         continue;
       }
-
-      const match = new Match({
-        id: matchInfo.id,
-        demoUrl: matchInfo.demoUrl,
-        type: 'faceit',
-        team1: matchInfo.team1,
-        team2: matchInfo.team2,
-      });
-
-      try {
-        return await match.save()
-      } catch (error) {
-        if (!error.message.includes('E11000 duplicate')) {
-          throw error
-        }
-        return;
-      }
     }
   }
 }

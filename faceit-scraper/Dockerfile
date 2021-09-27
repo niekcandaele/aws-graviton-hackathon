@@ -1,5 +1,4 @@
-# TODO: we can make this slimmer by using Alpine based images
-FROM node
+FROM node:14-alpine
 # Create app directory
 WORKDIR /usr/src/app
 
