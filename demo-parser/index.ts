@@ -32,7 +32,7 @@ async function main() {
   // Set the parameters for retrieving the messages in the Amazon SQS Queue.
   var getMessageParams = {
     QueueUrl: queueUrl,
-    MaxNumberOfMessages: 50,
+    MaxNumberOfMessages: 10,
     MessageAttributeNames: ["All"],
     VisibilityTimeout: 20,
     WaitTimeSeconds: 20,
@@ -102,7 +102,7 @@ setInterval(() => main()
   .catch(e => {
     console.error(e)
     process.exit(1)
-  }), 1000 * 60 * 60);
+  }), 1000 * 60 * 30);
 
 main()
   .then(() => {
