@@ -2,6 +2,7 @@ import { Document, Schema } from 'mongoose';
 import mongoose from 'mongoose';
 
 import { IPlayer, PlayerSchema } from './Player';
+import { autoPopulateAllFields } from './populateHook';
 import { IRound, RoundSchema } from './Round';
 import { ITeam } from './Team';
 
@@ -26,4 +27,5 @@ export const MatchSchema = new Schema<IMatch>({
   date: Date
 })
 
+MatchSchema.plugin(autoPopulateAllFields);
 export const Match = mongoose.model<IMatch>('Match', MatchSchema);
