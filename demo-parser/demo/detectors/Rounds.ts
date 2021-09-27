@@ -34,18 +34,23 @@ export default class Rounds extends Detector {
     });
   }
 
+  getActiveRound() {
+    return this.match.rounds[this.match.rounds.length - 1];
+  }
+
   async calculate(): Promise<void> {
     this.match.rounds = [];
     this.demoFile.gameEvents.on('round_start', () => {
       this.logger.debug(`Round ${this.match.rounds.length + 1} started`);
       this.activeRound = new Round();
-      this.match.rounds.push(this.activeRound);
       this.activeRound.kills = [];
       this.activeRound.bombStatusChanges = [];
       this.activeRound.startTick = this.demoFile.currentTick;
+      this.match.rounds.push(this.activeRound);
     });
 
     this.demoFile.gameEvents.on('round_end', e => {
+      this.activeRound = this.getActiveRound();
       if (!this.activeRound) {
         return;
       }
@@ -63,6 +68,7 @@ export default class Rounds extends Detector {
     });
 
     this.demoFile.gameEvents.on('round_officially_ended', () => {
+      this.activeRound = this.getActiveRound();
       if (!this.activeRound) {
         return;
       }
