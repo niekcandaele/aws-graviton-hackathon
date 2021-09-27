@@ -1,0 +1,1 @@
+Just a temporary container to read from SQS while the real thing is  still in development.
