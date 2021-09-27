@@ -8,14 +8,11 @@ import { Match } from './models/Match';
 async function main() {
   const queueName = process.env.QUEUE
   const bucketName = process.env.BUCKET
-  const event = process.env.SQS_EVENT
 
   const sqsClient = new SQS({ region: 'eu-west-1' })
   const s3Client = new S3Client({ region: 'eu-west-1' })
 
   console.log(`Using queue ${queueName} and bucket ${bucketName}`);
-  console.log('Handling event:');
-  console.log(event);
 
   const queueParams = {
     QueueName: queueName,
