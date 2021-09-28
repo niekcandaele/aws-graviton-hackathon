@@ -4,6 +4,7 @@ import mongoose from 'mongoose';
 import { BombStatusChangeEnum as BombStatusChangeEnum } from '../demo/type/BombStatusChange';
 import { IPlayerInfo } from './PlayerInfo';
 import { IPlayerKill } from './PlayerKill';
+import { autoPopulateAllFields } from './populateHook';
 import { IPosition, PositionSchema } from './Position';
 
 export interface IBombStatusChange extends Document {
@@ -20,5 +21,6 @@ export const BombStatusChangeSchema = new Schema<IBombStatusChange>({
   position: PositionSchema,
 })
 
+BombStatusChangeSchema.plugin(autoPopulateAllFields);
 export const BombStatusChange = mongoose.model<IBombStatusChange>('BombStatusChange', BombStatusChangeSchema);
 

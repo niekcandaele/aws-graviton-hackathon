@@ -4,6 +4,7 @@ import mongoose from 'mongoose';
 import { RoundType } from '../demo/type/RoundTypeEnum';
 import { IBombStatusChange } from './BombStatusChange';
 import { IPlayerKill } from './PlayerKill';
+import { autoPopulateAllFields } from './populateHook';
 import { ITeam } from './Team';
 
 export interface IRound extends Document {
@@ -28,5 +29,6 @@ export const RoundSchema = new Schema<IRound>({
   winningTeam: {type: Schema.Types.ObjectId, ref: 'Team'}
 })
 
+RoundSchema.plugin(autoPopulateAllFields);
 export const Round = mongoose.model<IRound>('Round', RoundSchema);
 

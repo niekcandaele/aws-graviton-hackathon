@@ -2,6 +2,7 @@ import { Document, Schema } from 'mongoose';
 import mongoose from 'mongoose';
 
 import { IPlayerInfo } from './PlayerInfo';
+import { autoPopulateAllFields } from './populateHook';
 
 export interface IPlayerKill extends Document {
   tick: Number
@@ -24,5 +25,6 @@ export const PlayerKillSchema = new Schema<IPlayerKill>({
 
 })
 
+PlayerKillSchema.plugin(autoPopulateAllFields);
 export const PlayerKill = mongoose.model<IPlayerKill>('PlayerKill', PlayerKillSchema);
 
