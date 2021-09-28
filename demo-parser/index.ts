@@ -15,8 +15,15 @@ const sqsClient = new SQS({ region: 'eu-west-1' })
 const s3Client = new S3Client({ region: 'eu-west-1' })
 
 let queueUrl
+let isProcessing = false;
 
 async function main() {
+
+  if (isProcessing) {
+    return;
+  }
+
+  isProcessing = true;
   console.log(`Using queue ${queueName} and bucket ${bucketName}`);
 
   const queueParams = {
@@ -118,6 +125,7 @@ async function main() {
 
     await ackMessage(message);
   }
+  isProcessing = false;
 }
 
 setInterval(() => main()
@@ -126,15 +134,7 @@ setInterval(() => main()
   .catch(e => {
     console.error(e)
     process.exit(1)
-  }), 1000 * 60 * 30);
-
-main()
-  .then(() => {
-  })
-  .catch(e => {
-    console.error(e)
-    process.exit(1)
-  })
+  }), 1000 * 60);
 
 async function ackMessage(message) {
   await sqsClient.send(new DeleteMessageCommand({
