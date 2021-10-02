@@ -59,6 +59,6 @@ export class CdkStack extends cdk.Stack {
     const demoUpload = new DemoUpload(this, 'DemoUpload', {bucket})
     const mongo = new Mongo(this, 'Mongo', {vpc})
     const faceitScraper = new FaceitScraper(this, 'FaceitScraper', {ECRRepos,bucket,cluster})
-    const api = new API(this, 'API', {vpc, queue: queueProcessor.queue})
+    const api = new API(this, 'API', {vpc})
   }
 }
