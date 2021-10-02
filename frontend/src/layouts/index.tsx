@@ -48,7 +48,7 @@ export default function IndexLayout(props: {
       <Layout className="site-layout">
         <Content style={{ margin: '5%' }}>{props.children}</Content>
         <Footer style={{ textAlign: 'center' }}>
-          Ant Design ©2018 Created by Ant UED
+          Created with ❤️ By <a href="https://candaele.dev/" target="_blank">Niek Candaele</a> and <a href="https://github.com/emielvanseveren" target="_blank">Emiel van Severen</a>
         </Footer>
       </Layout>
     </Layout>
