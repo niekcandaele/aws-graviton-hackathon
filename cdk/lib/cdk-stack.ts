@@ -11,6 +11,7 @@ import { API } from './api';
 import { DemoUpload } from './demoUploadLambda';
 import { ECRStack } from './ECR';
 import { FaceitScraper } from './faceitScraper';
+import { Frontend } from './frontend';
 import { Mongo } from './MongoStack';
 import { QueueProcessor } from './queueProcessor';
 
@@ -60,5 +61,6 @@ export class CdkStack extends cdk.Stack {
     const mongo = new Mongo(this, 'Mongo', {vpc})
     const faceitScraper = new FaceitScraper(this, 'FaceitScraper', {ECRRepos,bucket,cluster})
     const api = new API(this, 'API', {vpc})
+    const frontend = new Frontend(this, 'Frontend')
   }
 }
