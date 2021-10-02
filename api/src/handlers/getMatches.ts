@@ -4,26 +4,20 @@ import { apiResponse } from '../lib/apiResponse';
 import { getMongoose } from '../models';
 
 interface IQueryString {
-  page: number
-  limit: number
+  page: string
+  limit: string
 }
 
 const handler: Handler = async function getMatches(event: APIGatewayEvent, context: Context) {
   const qs = event.queryStringParameters as unknown as IQueryString;
-
-  let page = qs.page;
-  let limit = qs.limit;
-
-  if (!page) {
-    page = 1
-  }
-
-  if (!limit) {
-    limit = 10
-  }
-
+  let page = parseInt(qs.page, 10) || 1;
+  let limit = parseInt(qs.limit, 10) || 10;
+  
+  console.log(page);
+  console.log(limit);
+  
   const { Match } = await getMongoose();
-  const matches = await Match.paginate({}, { page, limit });
+  const matches = await Match.paginate({}, { page, limit, sort: { date: -1 } });
   const body = { matches };
 
   return apiResponse(body)
