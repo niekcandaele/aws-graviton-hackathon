@@ -23,6 +23,9 @@ export class API extends Construct {
     const api = new apigateway.RestApi(this, "bantr-api", {
       restApiName: "Bantr API",
       description: "CSGO stats",
+      defaultCorsPreflightOptions: {
+        allowOrigins: apigateway.Cors.ALL_ORIGINS
+      }
     });
 
     if (!process.env.MONGODB_URI) {
