@@ -1,6 +1,7 @@
 import { Table } from 'antd';
 import { format, formatDistance, formatRelative, subDays } from 'date-fns';
 import { useEffect, useState } from 'react';
+import { Link } from 'umi';
 
 import { get } from '../../lib/http';
 import { Match } from '../../types/match';
@@ -23,9 +24,10 @@ export default function Index() {
     };
     fetchData();
   }, [page, limit]);
+  
 
   const columns = [
-    {title: 'ID', dataIndex: '_id', key: 'id'},
+    {title: 'ID', dataIndex: '_id', key: 'id', render: (id: string) => <Link to={`/match/${id}`}>{id}</Link>},
     {title: 'Map', dataIndex: 'map', key: 'map'},
     {title: 'Date', dataIndex: 'date', key: 'date', render: (date: string) => format(new Date(date), 'HH:mm dd/MM/yyyy')},
   ]

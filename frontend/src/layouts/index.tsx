@@ -25,7 +25,6 @@ export default function IndexLayout(props: {
   const [collapsed, setCollapsed] = useState(false);
 
   const onCollapse = (collapsed: boolean) => {
-    console.log(collapsed);
     setCollapsed(collapsed);
   };
 
