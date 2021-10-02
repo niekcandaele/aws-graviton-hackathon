@@ -1,5 +1,6 @@
 import { APIGatewayEvent, Context, Handler } from 'aws-lambda';
 
+import { apiResponse } from '../lib/apiResponse';
 import { getMongoose } from '../models';
 
 interface IQueryString {
@@ -8,7 +9,10 @@ interface IQueryString {
 }
 
 const handler: Handler = async function getMatches(event: APIGatewayEvent, context: Context) {
-  let { page, limit } = event.queryStringParameters as unknown as IQueryString
+  const qs = event.queryStringParameters as unknown as IQueryString;
+
+  let page = qs.page;
+  let limit = qs.limit;
 
   if (!page) {
     page = 1
@@ -22,12 +26,7 @@ const handler: Handler = async function getMatches(event: APIGatewayEvent, conte
   const matches = await Match.paginate({}, { page, limit });
   const body = { matches };
 
-  return {
-    statusCode: 200,
-    headers: {},
-    body: JSON.stringify(body),
-    isBase64Encoded: false
-  }
+  return apiResponse(body)
 
 }
 

@@ -24,7 +24,7 @@ export class API extends Construct {
       restApiName: "Bantr API",
       description: "CSGO stats",
       defaultCorsPreflightOptions: {
-        allowOrigins: apigateway.Cors.ALL_ORIGINS
+        allowOrigins: apigateway.Cors.ALL_ORIGINS,
       }
     });
 

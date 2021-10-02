@@ -1,16 +1,12 @@
 import { APIGatewayEvent, Context, Handler } from 'aws-lambda';
 
+import { apiResponse } from '../lib/apiResponse';
 import { getMongoose } from '../models';
 
 
 const handler: Handler = async function getKill(event: APIGatewayEvent, context: Context) {
   if (!event.pathParameters || !event.pathParameters.id) {
-    return {
-      statusCode: 400,
-      headers: {},
-      body: JSON.stringify({ error: 'id is required' }),
-      isBase64Encoded: false
-    }
+    return apiResponse({ error: 'id is required' }, 400)
   }
 
   const id = event.pathParameters.id
@@ -24,12 +20,7 @@ const handler: Handler = async function getKill(event: APIGatewayEvent, context:
 
   const body = { kill };
 
-  return {
-    statusCode: 200,
-    headers: {},
-    body: JSON.stringify(body),
-    isBase64Encoded: false
-  }
+  return apiResponse(body)
 
 }
 
