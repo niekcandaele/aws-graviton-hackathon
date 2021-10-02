@@ -5,13 +5,21 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "pkg": "zip -r api-lambdas.zip src/* node_modules/*"
+    "build": "tsc",
+    "pkg": "npm run build && zip -r api-lambdas.zip build/* node_modules/*"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "@aws-sdk/client-ecs": "^3.33.0",
-    "mongoose": "^6.0.7"
+    "mongoose": "^6.0.7",
+    "mongoose-paginate": "^5.0.3"
+  },
+  "devDependencies": {
+    "@types/aws-lambda": "^8.10.83",
+    "@types/mongoose-paginate": "^5.0.10",
+    "@types/node": "^16.10.2",
+    "typescript": "^4.4.3"
   }
 }
