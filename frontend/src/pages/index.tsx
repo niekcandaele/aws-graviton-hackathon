@@ -10,12 +10,16 @@ export default function Index() {
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(10);
   const [total, setTotal] = useState(0);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    setLoading(true);
+
     const fetchData = async () => {
       const response = await get('/matches', { page: page, limit: limit });
       setMatches(response.data.matches.docs);
-      setTotal(response.data.matches.total)
+      setTotal(response.data.matches.total);
+      setLoading(false);
     };
     fetchData();
   }, [page, limit]);
@@ -40,6 +44,7 @@ export default function Index() {
       columns={columns} 
       onChange={onTableChange}
       pagination={{total: total, pageSize: limit, current: page}}
+      loading={loading}
       />;
     </div>
   );
