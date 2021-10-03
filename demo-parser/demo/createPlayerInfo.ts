@@ -136,6 +136,7 @@ export default async function createPlayerInfo(demoFile: DemoFile, player: Playe
     tick: demoFile.currentTick,
     bulletsInMagazine: player.weapon?.clipAmmo,
     weapon: player.weapon?.className,
+    placeName: player.placeName
   });
 
   await playerInfo.save();
