@@ -18,7 +18,7 @@ export class Frontend extends Construct {
     const siteBucket = new s3.Bucket(this, 'SiteBucket', {
       bucketName: 'bantr.app',
       websiteIndexDocument: 'index.html',
-      websiteErrorDocument: 'error.html',
+      websiteErrorDocument: 'index.html',
       publicReadAccess: false,
     });
 
