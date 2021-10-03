@@ -17,4 +17,11 @@ export default defineConfig({
     },
   ],
   fastRefresh: {},
+  chainWebpack(memo) {
+    memo.module
+      .rule('media')
+      .test(/\.(mp3|4)$/)
+      .use('file-loader')
+      .loader(require.resolve('file-loader'))
+  }
 });
