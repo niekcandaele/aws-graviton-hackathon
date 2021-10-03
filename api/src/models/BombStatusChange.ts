@@ -11,6 +11,7 @@ export interface IBombStatusChange extends Document {
   status: BombStatusChangeEnum
   player: IPlayerInfo
   position: IPosition,
+  placeName: string
 }
 
 export const BombStatusChangeSchema = new Schema<IBombStatusChange>({
@@ -18,7 +19,9 @@ export const BombStatusChangeSchema = new Schema<IBombStatusChange>({
   tick: Number,
   player: {type: Schema.Types.ObjectId, ref: 'PlayerInfo'},
   position: PositionSchema,
+  placeName: String
 })
+
 
 export const BombStatusChange = mongoose.model<IBombStatusChange>('BombStatusChange', BombStatusChangeSchema);
 

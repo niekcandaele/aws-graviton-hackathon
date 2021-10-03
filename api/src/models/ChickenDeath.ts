@@ -4,27 +4,24 @@ import mongoose from 'mongoose';
 import { IPlayerInfo } from './PlayerInfo';
 
 
-export interface IPlayerKill extends Document {
+export interface IChickenDeath extends Document {
   tick: Number
   throughSmoke: boolean,
   throughWall: boolean,
   whileBlind: boolean,
   attacker: IPlayerInfo,
-  victim: IPlayerInfo,
-  assister: IPlayerInfo,
+  weapon: string
 }
 
-export const PlayerKillSchema = new Schema<IPlayerKill>({
+export const ChickenDeathSchema = new Schema<IChickenDeath>({
   tick: Number,
   throughSmoke: Boolean,
   throughWall: Boolean,
   whileBlind: Boolean,
+  weapon: String,
   attacker: {type: Schema.Types.ObjectId, ref: 'PlayerInfo'},
-  victim: {type: Schema.Types.ObjectId, ref: 'PlayerInfo'},
-  assister: {type: Schema.Types.ObjectId, ref: 'PlayerInfo'},
-
 })
 
 
-export const PlayerKill = mongoose.model<IPlayerKill>('PlayerKill', PlayerKillSchema);
+export const ChickenDeath = mongoose.model<IChickenDeath>('ChickenDeath', ChickenDeathSchema);
 

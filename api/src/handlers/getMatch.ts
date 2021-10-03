@@ -26,6 +26,22 @@ const handler: Handler = async function getMatches(event: APIGatewayEvent, conte
         model: 'BombStatusChange'
       },
       {
+        path: 'chickenDeaths',
+        model: 'ChickenDeath'
+      },
+      {
+        path: 'grenades',
+        model: 'Grenade'
+      },
+      {
+        path: 'playerHurts',
+        model: 'PlayerHurt'
+      },
+      {
+        path: 'playerBlinds',
+        model: 'PlayerBlind'
+      },
+      {
         path: 'winningTeam',
         model: 'Team'
       }]

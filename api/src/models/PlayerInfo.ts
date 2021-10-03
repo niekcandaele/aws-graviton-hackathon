@@ -5,6 +5,8 @@ import { IPlayer } from './Player';
 import { IPosition, PositionSchema } from './Position';
 import { WeaponEnum } from './type/WeaponEnum';
 
+
+
 export interface IPlayerInfo extends Document {
   tick: Number,
   equipmentValue: Number,
@@ -14,10 +16,11 @@ export interface IPlayerInfo extends Document {
   health: Number,
   armour: Number,
   isScoped: Boolean,
-  weapon: WeaponEnum,
+  weapon: String,
   bulletsInMagazine: Number,
   position: IPosition,
   player: IPlayer | undefined
+  placeName: string
 }
 
 export const PlayerInfoSchema = new Schema({
@@ -29,10 +32,11 @@ export const PlayerInfoSchema = new Schema({
   health: Number,
   armour: Number,
   isScoped: Boolean,
-  weapon: {type: String, enum: [...Object.values(WeaponEnum), null]},
+  weapon: String,
   bulletsInMagazine: Number,
   position: PositionSchema,
   player: {type: Schema.Types.ObjectId, ref: 'Player'},
+  placeName: String
 })
 
 
