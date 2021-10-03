@@ -5,7 +5,6 @@ import { Match } from './Match';
 import { Player } from './Player';
 import { PlayerInfo } from './PlayerInfo';
 
-
 const { Schema } = mongoose
 
 export async function getMongoose() {

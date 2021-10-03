@@ -48,6 +48,7 @@ export default class Rounds extends Detector {
       this.activeRound.playerHurts = [];
       this.activeRound.grenades = [];
       this.activeRound.bombStatusChanges = [];
+      this.activeRound.playerBlinds = [];
       this.activeRound.startTick = this.demoFile.currentTick;
       this.match.rounds.push(this.activeRound);
     });

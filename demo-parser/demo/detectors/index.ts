@@ -1,4 +1,5 @@
 import BasicInfo from './BasicInfo';
+import Blind from './Blind';
 import BombStatus from './BombStatus';
 import Grenade from './Grenades';
 import Kills from './Kills';
@@ -15,5 +16,6 @@ export default [
   Kills, 
   BombStatus,
   Hurt,
-  Grenade
+  Grenade,
+  Blind
 ];
