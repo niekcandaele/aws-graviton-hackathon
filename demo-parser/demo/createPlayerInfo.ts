@@ -135,7 +135,7 @@ export default async function createPlayerInfo(demoFile: DemoFile, player: Playe
     isScoped: player.isScoped,
     tick: demoFile.currentTick,
     bulletsInMagazine: player.weapon?.clipAmmo,
-    weapon: translateDemoWeaponToEnum(player.weapon),
+    weapon: player.weapon?.className,
   });
 
   await playerInfo.save();

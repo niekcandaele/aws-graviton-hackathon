@@ -16,7 +16,7 @@ export interface IPlayerInfo extends Document {
   health: Number,
   armour: Number,
   isScoped: Boolean,
-  weapon: WeaponEnum,
+  weapon: String,
   bulletsInMagazine: Number,
   position: IPosition,
   player: IPlayer | undefined
@@ -31,7 +31,7 @@ export const PlayerInfoSchema = new Schema({
   health: Number,
   armour: Number,
   isScoped: Boolean,
-  weapon: {type: String, enum: [...Object.values(WeaponEnum), null]},
+  weapon: String,
   bulletsInMagazine: Number,
   position: PositionSchema,
   player: {type: Schema.Types.ObjectId, ref: 'Player'},

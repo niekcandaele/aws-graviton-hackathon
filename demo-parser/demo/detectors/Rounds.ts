@@ -26,7 +26,7 @@ export default class Rounds extends Detector {
   private isKnifeRound(round: IRound) {
     return round.kills.every(_ => {
       if (_.attacker) {
-        return _.attacker.weapon === WeaponEnum.Knife;
+        return _.attacker.weapon === "weapon_knife" || _.attacker.weapon === "weapon_bayonet";
       } else {
         // If there was no attacker, we still assume knife round
         // E.g someone can yeet themselves off the map in Vertigo during knife round
