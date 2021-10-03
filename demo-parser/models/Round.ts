@@ -4,6 +4,7 @@ import mongoose from 'mongoose';
 import { RoundType } from '../demo/type/RoundTypeEnum';
 import { TeamType } from '../demo/type/TeamType';
 import { IBombStatusChange } from './BombStatusChange';
+import { IChickenDeath } from './ChickenDeath';
 import { IGrenade } from './Grenade';
 import { IPlayerBlind } from './PlayerBlind';
 import { IPlayerHurt } from './PlayerHurt';
@@ -17,6 +18,7 @@ export interface IRound extends Document {
   bombStatusChanges: IBombStatusChange[]
   playerBlinds: IPlayerBlind[]
   grenades: IGrenade[]
+  chickenDeaths: IChickenDeath[]
   officialEndTick: Number
   endTick: Number
   startTick: Number
@@ -32,6 +34,7 @@ export const RoundSchema = new Schema<IRound>({
   bombStatusChanges: [{type: Schema.Types.ObjectId, ref: 'BombStatusChange'}],
   playerBlinds: [{type: Schema.Types.ObjectId, ref: 'PlayerBlind'}],
   grenades: [{type: Schema.Types.ObjectId, ref: 'Grenade'}],
+  chickenDeaths: [{type: Schema.Types.ObjectId, ref: 'ChickenDeath'}],
   officialEndTick: Number,
   endTick: Number,
   startTick: Number,
