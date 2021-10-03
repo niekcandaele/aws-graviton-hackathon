@@ -55,6 +55,7 @@ export default class Grenades extends Detector {
       
       grenadeRecord.position = position;
       grenadeRecord.type = type;
+      grenadeRecord.tick = this.currentTick;
 
       this.currentRound.grenades.push(grenadeRecord);
     }
