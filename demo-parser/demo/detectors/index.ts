@@ -5,6 +5,7 @@ import Chicken from './ChickenDeaths';
 import Grenade from './Grenades';
 import Kills from './Kills';
 import Hurt from './PlayerHurt';
+import PlayerInterval from './PlayerInterval';
 import Players from './Players';
 import Rounds from './Rounds';
 import Teams from './Teams';
@@ -19,5 +20,6 @@ export default [
   Hurt,
   Grenade,
   Blind,
-  Chicken
+  Chicken,
+  PlayerInterval
 ];
