@@ -41,7 +41,7 @@ export class FaceitScraper extends Construct {
         image: ecs.ContainerImage.fromEcrRepository(ECRRepos.faceitScraperRepository, 'latest'),
         memoryLimitMiB: 1024,
         environment: {
-          WATCHED_FACEIT_HUBS: '74624044-158f-446a-ad4f-cbd2e0e89423,6f63b115-f45e-42b7-88ef-2a96714cd5e1,bfbb0657-8694-4278-8007-a7dc58f544af',
+          WATCHED_FACEIT_HUBS: '74624044-158f-446a-ad4f-cbd2e0e89423,6f63b115-f45e-42b7-88ef-2a96714cd5e1,bfbb0657-8694-4278-8007-a7dc58f544af,5032bca6-1fc2-420f-9785-416c03112b9f,a2bca7a5-cb98-4b0e-b2f9-3f9c21e836e4',
           FACEIT_API: process.env.FACEIT_API,
           BUCKET: bucket.bucketName,
           MONGODB_URI: process.env.MONGODB_URI
