@@ -29,7 +29,7 @@ export default function Index() {
   const columns = [
     {title: 'ID', dataIndex: '_id', key: 'id', render: (id: string) => <Link to={`/match/${id}`}>{id}</Link>},
     {title: 'Map', dataIndex: 'map', key: 'map'},
-    {title: 'Date', dataIndex: 'date', key: 'date', render: (date: string) => format(new Date(date), 'HH:mm dd/MM/yyyy')},
+    {title: 'Date', dataIndex: 'date', key: 'date', render: (date: string) => formatDistance(new Date(), new Date(date)) + ' ago'},
   ]
 
   const onTableChange = (pagination: any,) => {
