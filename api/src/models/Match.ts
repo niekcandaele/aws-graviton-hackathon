@@ -1,5 +1,6 @@
 import { Document, Schema } from 'mongoose';
 import mongoose from 'mongoose';
+import deepPopulate from 'mongoose-deep-populate';
 import mongoosePaginate from 'mongoose-paginate';
 
 import { IPlayer, PlayerSchema } from './Player';
@@ -28,5 +29,6 @@ export const MatchSchema = new Schema<IMatch>({
 })
 
 MatchSchema.plugin(mongoosePaginate);
+MatchSchema.plugin(deepPopulate(mongoose))
 
 export const Match = mongoose.model<IMatch>('Match', MatchSchema);

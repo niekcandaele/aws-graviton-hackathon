@@ -75,7 +75,7 @@ class BantrLambda {
       handler: `build/handlers/${props.name}.handler`,
       runtime: lambda.Runtime.NODEJS_14_X,
       vpc: props.vpc,
-      timeout: cdk.Duration.seconds(10),
+      timeout: cdk.Duration.seconds(30),
     })
 
     this.lambda.addEnvironment('MONGODB_URI', process.env.MONGODB_URI)
