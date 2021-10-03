@@ -1,4 +1,4 @@
-import { DemoFile } from 'demofile';
+import { DemoFile, Player } from 'demofile';
 
 import { logger } from '../../lib/logger';
 import { IMatch } from '../../models/Match';
@@ -25,6 +25,10 @@ export default abstract class Detector {
 
   protected getPlayerFromId(id) {
     return this.demoFile.entities.getByUserId(id);
+  }
+
+  protected findMatchingPlayer(player: Player) {
+    return this.match.players.find(_ => _.steamId === player.steam64Id);
   }
 
   protected get currentRound() {

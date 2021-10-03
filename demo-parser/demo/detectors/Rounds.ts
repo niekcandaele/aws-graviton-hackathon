@@ -45,6 +45,7 @@ export default class Rounds extends Detector {
       this.logger.debug(`Round ${this.match.rounds.length + 1} started`);
       this.activeRound = new Round();
       this.activeRound.kills = [];
+      this.activeRound.playerHurts = [];
       this.activeRound.bombStatusChanges = [];
       this.activeRound.startTick = this.demoFile.currentTick;
       this.match.rounds.push(this.activeRound);

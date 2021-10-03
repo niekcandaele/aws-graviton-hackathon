@@ -70,8 +70,4 @@ export default class Kills extends Detector {
       }
     }
   }
-
-  private findMatchingPlayer(player: Player) {
-    return this.match.players.find(_ => _.steamId === player.steam64Id);
-  }
 }
