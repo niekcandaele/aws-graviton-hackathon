@@ -12,13 +12,15 @@ interface ILoadingProps {
 
 
 export default function Loading(props: ILoadingProps) {
+  const style = {
+    margin: "auto",
+    width: "50%",
+    padding: "10px",
+  }
+
+
     return (
-      <Spin tip="Loading...">
-        <Alert
-          message="Loading"
-          description={props.description ? props.description :  "Further details about the context of this alert."}
-          type="info"
-        />
-      </Spin>
+      <Spin style={style} tip={props.description ? props.description :  "Further details about the context of this alert."} />
     );
 }
+

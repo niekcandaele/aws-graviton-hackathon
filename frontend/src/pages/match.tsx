@@ -29,7 +29,7 @@ export default function MatchDetails(props: IMatchDetailProps) {
   }, []);
 
   if (loading || !match) {
-    return <Loading />;
+    return <Loading description="Crunching the numbers! 🤓"/>;
   }
 
   const chickenKills = match.rounds.reduce((acc, round) => {
