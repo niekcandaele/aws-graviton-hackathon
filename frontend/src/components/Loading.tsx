@@ -3,8 +3,8 @@ import { Alert, Spin } from 'antd';
 import { format, formatDistance, formatRelative, subDays } from 'date-fns';
 import { useEffect, useState } from 'react';
 
-import { get } from '../../lib/http';
 import { Match } from '../../types/match';
+import { get } from '../lib/http';
 
 interface ILoadingProps {
   description?: string

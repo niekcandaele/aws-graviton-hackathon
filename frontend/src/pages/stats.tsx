@@ -1,7 +1,7 @@
 import { Button, Col, Row, Statistic } from 'antd';
 import { useEffect, useState } from 'react';
 
-import { get } from '../../lib/http';
+import { get } from '../lib/http';
 
 interface IStats {
   totalMatches: number

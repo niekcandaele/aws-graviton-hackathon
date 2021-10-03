@@ -3,8 +3,8 @@ import { format, formatDistance, formatRelative, subDays } from 'date-fns';
 import { useEffect, useState } from 'react';
 import { Link } from 'umi';
 
-import { get } from '../../lib/http';
 import { Match } from '../../types/match';
+import { get } from '../lib/http';
 
 export default function Index() {
   const [matches, setMatches] = useState<Match[]>([]);
