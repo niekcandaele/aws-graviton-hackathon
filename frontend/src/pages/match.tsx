@@ -1,3 +1,4 @@
+import Loading from '@/components/Loading';
 import { Table } from 'antd';
 import { Alert, Spin } from 'antd';
 import { format, formatDistance, formatRelative, subDays } from 'date-fns';
@@ -28,13 +29,7 @@ export default function MatchDetails(props: IMatchDetailProps) {
 
   if (loading) {
     return (
-      <Spin tip="Loading...">
-        <Alert
-          message="Alert message title"
-          description="Further details about the context of this alert."
-          type="info"
-        />
-      </Spin>
+      <Loading/>
     );
   }
 
