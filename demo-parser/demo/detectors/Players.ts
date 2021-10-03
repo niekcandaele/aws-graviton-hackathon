@@ -1,5 +1,6 @@
 import { DemoFile } from 'demofile';
 
+import { animalNames } from '../../lib/animals';
 import { IMatch } from '../../models/Match';
 import { IPlayer, Player } from '../../models/Player';
 import Detector from './Detector';
@@ -49,10 +50,22 @@ export default class Players extends Detector {
       } else {
         player = new Player();
         player.steamId = steamId;
+        player.name = this.getAnonymizedName(player, this.playersInMatch);
       }
       await player.save();
       this.playersInMatch.push(player);
       return player;
     }
+  }
+
+  // Assign all players a random animal name
+  // This is prettier to display in the frontend + privacy + this way there wont be any "xX_iLuVM1LFs_420_Xx"s in the database :))
+  private getAnonymizedName(player: IPlayer, playersInMatch: IPlayer[]) {
+    const existingNamesInMatch = playersInMatch.map(p => p.name);
+    const possibleNames = animalNames.filter(
+      name => existingNamesInMatch.indexOf(name) === -1
+    );
+
+    return possibleNames[Math.floor(Math.random() * possibleNames.length)];
   }
 }
