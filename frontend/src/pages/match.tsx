@@ -47,7 +47,7 @@ export default function MatchDetails(props: IMatchDetailProps) {
           <Statistic title="Chickens killed" value={chickenKills} />
         </Col>
         <Col span={8}>
-          <Statistic title="Date" value={formatDistance(subDays(new Date(), 1), new Date(match.date)) + ' ago'} />
+          <Statistic title="Date" value={formatDistance(new Date(), new Date(match.date)) + ' ago'} />
         </Col>
       </Row>
 
