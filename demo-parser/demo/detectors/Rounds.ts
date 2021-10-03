@@ -4,6 +4,7 @@ import { IMatch } from '../../models/Match';
 import { IRound, Round } from '../../models/Round';
 import { ITeam } from '../../models/Team';
 import { RoundType } from '../type/RoundTypeEnum';
+import { TeamType } from '../type/TeamType';
 import { WeaponEnum } from '../type/WeaponEnum';
 import Detector from './Detector';
 
@@ -65,6 +66,20 @@ export default class Rounds extends Detector {
         this.activeRoundWinner,
         this.match.teams
       );
+
+      if (this.activeRound.winningTeam) {
+        if (!this.invertTeams) {
+          this.activeRound.winningSide = this.activeRound.winningTeam.startingSide
+        } else {
+          if (this.activeRound.winningTeam.startingSide === TeamType.CounterTerrorist) {
+            this.activeRound.winningSide = TeamType.Terrorist
+          } else {
+            this.activeRound.winningSide = TeamType.CounterTerrorist
+          }
+        }
+      }
+
+
     });
 
     this.demoFile.gameEvents.on('round_officially_ended', () => {
