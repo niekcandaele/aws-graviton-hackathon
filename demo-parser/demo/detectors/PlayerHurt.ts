@@ -43,9 +43,9 @@ export default class Hurt extends Detector {
 
         hurtRecord.tick = this.currentTick;
   
-        hurtRecord.attacker = await createPlayerInfo(this.demoFile, attacker);
+        hurtRecord.attacker = await createPlayerInfo(this.demoFile, attacker, 'hurt_attacker');
         hurtRecord.attacker.player = this.findMatchingPlayer(attacker);
-        hurtRecord.victim = await createPlayerInfo(this.demoFile, victim);
+        hurtRecord.victim = await createPlayerInfo(this.demoFile, victim, 'hurt_victim');
         hurtRecord.victim.player = this.findMatchingPlayer(victim);
         hurtRecord.hitGroup = hitGroup;
         hurtRecord.weapon = weapon;

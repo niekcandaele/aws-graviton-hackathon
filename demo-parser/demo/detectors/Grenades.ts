@@ -50,7 +50,7 @@ export default class Grenades extends Detector {
 
       const grenadeRecord = new Grenade();
 
-      grenadeRecord.attacker = await createPlayerInfo(this.demoFile, attacker);
+      grenadeRecord.attacker = await createPlayerInfo(this.demoFile, attacker, 'grenade');
       grenadeRecord.attacker.player = this.findMatchingPlayer(attacker);
       
       grenadeRecord.position = position;

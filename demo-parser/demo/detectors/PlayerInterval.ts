@@ -32,11 +32,20 @@ export default class PlayerInterval extends Detector {
         this.logger.debug(`Making snapshot of all player infos ${this.demoFile.currentTick}`)
         for (const player of this.demoFile.players) {
           if (player.isAlive) {
-            this.playerIntervalSnapshots.push(createPlayerInfo(this.demoFile, player))
+            this.playerIntervalSnapshots.push(createPlayerInfo(this.demoFile, player, 'interval'))
           }
         }
       }
     })
+
+    this.demoFile.gameEvents.on('round_freeze_end', e => {
+      for (const player of this.demoFile.players) {
+        if (player.isAlive) {
+          this.playerIntervalSnapshots.push(createPlayerInfo(this.demoFile, player, 'freezetime_end'))
+        }
+      }
+    });
+
   }
 
   async saveData() {
