@@ -1,9 +1,10 @@
 from feature_engineering import __version__
-from feature_engineering.features import map_breakdown
+from stats.gamesPerMap import gamesPerMap
 
 
 def test_version():
     assert __version__ == '0.1.0'
 
 def test_mapBreakdown():
-    assert map_breakdown.Map_Breakdown().run() == 5
+    result = gamesPerMap()
+    assert "de_dust2" in result
