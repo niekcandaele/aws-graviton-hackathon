@@ -1,4 +1,4 @@
-from feature_engineering.stats.dynamo import getItem, putItem
+from .dynamo import getItem, putItem
 from abc import ABC, abstractmethod
 
 

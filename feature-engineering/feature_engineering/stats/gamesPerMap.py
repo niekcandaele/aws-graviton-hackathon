@@ -1,6 +1,6 @@
-from feature_engineering.db import get_collections
-from feature_engineering.stats.base import Stat
-from feature_engineering.stats.dynamo import putItem
+from ..db import get_collections
+from ..stats.base import Stat
+from ..stats.dynamo import putItem
 
 def gamesPerMap():
   collections = get_collections()

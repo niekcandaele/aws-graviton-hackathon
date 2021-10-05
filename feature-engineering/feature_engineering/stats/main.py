@@ -1,5 +1,5 @@
-from feature_engineering.stats.dynamo import create_table, scan
-from feature_engineering.stats.gamesPerMap import GamesPerMap
+from .dynamo import create_table, scan
+from .gamesPerMap import GamesPerMap
 
 
 if __name__ == "__main__":
