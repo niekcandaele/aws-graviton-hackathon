@@ -1,4 +1,6 @@
 from feature_engineering.db import get_collections
+from feature_engineering.stats.base import Stat
+from feature_engineering.stats.dynamo import putItem
 
 def gamesPerMap():
   collections = get_collections()
@@ -19,3 +21,14 @@ def gamesPerMap():
     map_count[doc["_id"]] = dict(count=doc["count"])
 
   return map_count
+
+class GamesPerMap(Stat):
+  def __init__(self):
+    super().__init__("gamesPerMap")
+
+  def _calculate(self):
+    return gamesPerMap()
+
+  def _save(self):
+    for key in self.value:
+      putItem(f"mapcount_{key}", self.value[key])
