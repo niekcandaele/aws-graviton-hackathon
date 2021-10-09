@@ -6,8 +6,8 @@ import { Alert, Spin } from 'antd';
 import { format, formatDistance, formatRelative, subDays } from 'date-fns';
 import { useEffect, useState } from 'react';
 import useSound from 'use-sound';
-import chickenSfx from '../../public/Rooster-Crow.mp3';
 
+import chickenSfx from '../../public/Rooster-Crow.mp3';
 import { Match } from '../../types/match';
 import { get } from '../lib/http';
 
@@ -19,7 +19,6 @@ export default function MatchDetails(props: IMatchDetailProps) {
   const [match, setMatch] = useState<Match>();
   const [loading, setLoading] = useState(true);
   const [play] = useSound(chickenSfx);
-
 
   useEffect(() => {
     setLoading(true);
@@ -33,7 +32,7 @@ export default function MatchDetails(props: IMatchDetailProps) {
   }, []);
 
   if (loading || !match) {
-    return <Loading description="Crunching the numbers! 🤓"/>;
+    return <Loading description="Crunching the numbers! 🤓" />;
   }
 
   const chickenKills = match.rounds.reduce((acc, round) => {
@@ -55,16 +54,18 @@ export default function MatchDetails(props: IMatchDetailProps) {
           <Statistic title="Chickens killed" value={chickenKills} />
         </Col>
         <Col span={8}>
-          <Statistic title="Date" value={formatDistance(new Date(), new Date(match.date)) + ' ago'} />
+          <Statistic
+            title="Date"
+            value={formatDistance(new Date(), new Date(match.date)) + ' ago'}
+          />
         </Col>
       </Row>
 
-      <Scoreboard match={match} />
+      <Scoreboard matchId={match._id} />
 
-      <Divider/>
+      <Divider />
 
       <RoundListing match={match} />
-
     </div>
   );
 }

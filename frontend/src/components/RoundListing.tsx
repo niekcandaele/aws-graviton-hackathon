@@ -24,7 +24,7 @@ export default function RoundListing(props: IRoundListing) {
 
   const roundsListing = match.rounds.map((round, idx) => (
     <Panel header={`Round ${idx + 1} - ${Math.round((round.officialEndTick - round.startTick) / 120)} seconds`} key={idx + 1} >
-      <Round round={round}/>
+      <Round roundId={round._id}/>
     </Panel>
   ));
 

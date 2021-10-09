@@ -9,22 +9,38 @@ import { get } from '../lib/http';
 import Loading from './Loading';
 
 interface IScoreboardProps {
-  match: Match | undefined;
+  matchId: string
+}
+
+function onlyUnique(value: string, index: number, self: string[]) {
+  return self.indexOf(value) === index;
 }
 
 export default function Scoreboard(props: IScoreboardProps) {
   const [loading, setLoading] = useState(true);
-  const { match } = props;
+  const [scoreboard, setScoreboard] = useState({});
+  const { matchId } = props;
 
-  if (!match) {
-    return <Loading />;
+  useEffect(() => {
+    setLoading(true);
+    const fetchData = async () => {
+      const response = await get(`/matches/${matchId}/scoreboard`);
+      setScoreboard(response.data.scoreboard);
+      setLoading(false);
+    };
+    fetchData();
+  }, []);
+
+
+  if (!scoreboard || loading) {
+    return <Loading description="Loading scoreboard"/>;
   }
 
   const columns = [
     {
       title: 'Player',
-      dataIndex: 'id',
-      key: 'id',
+      dataIndex: 'name',
+      key: 'name',
     },
     {
       title: 'Kills',
@@ -42,9 +58,8 @@ export default function Scoreboard(props: IScoreboardProps) {
     },
   ];
 
-  const scoreboard = calculateScoreboard(match);
-  const players = Object.values(scoreboard);
-  const teams = match.teams.map((t) => t._id);
+  const players: IPlayerOnScoreboard[] = Object.values(scoreboard);
+  const teams = players.map((p) => p.team).filter(onlyUnique);
   const dataTeam1 = players.filter((p) => p.team === teams[0]);
   const dataTeam2 = players.filter((p) => p.team === teams[1]);
 
