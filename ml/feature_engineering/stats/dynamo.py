@@ -6,7 +6,7 @@ load_dotenv()
 #dynamodb = boto3.resource('dynamodb', endpoint_url='http://localhost:8000')
 dynamodb = boto3.resource('dynamodb', region_name="eu-west-1")
 
-table = dynamodb.Table(os.getenv('DYNAMO_TABLE'), 'Stats')
+table = dynamodb.Table(os.getenv('DYNAMO_TABLE', 'Stats'))
 
 def getItem(itemName):
     response = table.get_item(
