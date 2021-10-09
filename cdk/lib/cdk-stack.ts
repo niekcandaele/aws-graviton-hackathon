@@ -9,6 +9,7 @@ import * as dotenv from 'dotenv';
 
 import { API } from './api';
 import { DemoUpload } from './demoUploadLambda';
+import { DynamoDbStack } from './dynamoDb';
 import { ECRStack } from './ECR';
 import { FaceitScraper } from './faceitScraper';
 import { Frontend } from './frontend';
@@ -55,6 +56,7 @@ export class CdkStack extends cdk.Stack {
     });
     
     
+    const dynamoDb = new DynamoDbStack(this, 'DynamoDB')
     const ECRRepos = new ECRStack(this, 'ECRStack')
     const queueProcessor = new QueueProcessor(this, 'QueueProcessor', {ECRRepos,bucket,cluster, vpc})
     const demoUpload = new DemoUpload(this, 'DemoUpload', {bucket})

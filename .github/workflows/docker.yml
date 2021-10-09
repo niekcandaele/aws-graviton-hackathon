@@ -7,6 +7,8 @@ env:
   AWS_REGION: eu-west-1                   
   TMP_CONTAINER_ECR_REPOSITORY: cdkstack-ecrstacktmpcontainerrepositoryb4d3e0e4-tv7wqfs40umm                                                      
   FACEIT_SCRAPER_ECR_REPOSITORY: cdkstack-ecrstackfaceitscraperrepositoryfabd3644-dnutmgz5qbim                                                    
+  STATS_CALCULATOR_ECR_REPOSITORY: cdkstack-ecrstackstatscalculatorrepository985d2aa9-gna3ic02ky55 
+  IMAGE_TAG: latest                                                  
 jobs:
   temp-container:
     runs-on: ubuntu-latest
@@ -28,7 +30,6 @@ jobs:
       - name: Build, tag, and push temp container image to Amazon ECR
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          IMAGE_TAG: latest
         run: |
           # Build a docker container and
           # push it to ECR so that it can
@@ -39,10 +40,13 @@ jobs:
       - name: Build, tag, and push faceit scraper image to Amazon ECR
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          IMAGE_TAG: latest
         run: |
-          # Build a docker container and
-          # push it to ECR so that it can
-          # be deployed to ECS.
           docker build -t $ECR_REGISTRY/$FACEIT_SCRAPER_ECR_REPOSITORY:$IMAGE_TAG faceit-scraper
           docker push $ECR_REGISTRY/$FACEIT_SCRAPER_ECR_REPOSITORY:$IMAGE_TAG
+
+      - name: Build, tag, and push stats calculator image to Amazon ECR
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+        run: |
+          docker build -t $ECR_REGISTRY/$STATS_CALCULATOR_ECR_REPOSITORY:$IMAGE_TAG ml
+          docker push $ECR_REGISTRY/$STATS_CALCULATOR_ECR_REPOSITORY:$IMAGE_TAG          

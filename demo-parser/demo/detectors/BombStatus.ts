@@ -74,7 +74,7 @@ export default class BombStatus extends Detector {
     bombStatus.status = type;
     bombStatus.tick = this.currentTick;
     if (player) {
-      bombStatus.player = await createPlayerInfo(this.demoFile, player);
+      bombStatus.player = await createPlayerInfo(this.demoFile, player, 'bomb_status');
       bombStatus.placeName = player.placeName;
     }
 

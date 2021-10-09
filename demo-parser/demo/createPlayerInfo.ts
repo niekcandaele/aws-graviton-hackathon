@@ -118,7 +118,7 @@ function translateDemoWeaponToEnum(weapon: Weapon | null): WeaponEnum | null {
   }
 }
 
-export default async function createPlayerInfo(demoFile: DemoFile, player: Player): Promise<IPlayerInfo> {
+export default async function createPlayerInfo(demoFile: DemoFile, player: Player, type: string): Promise<IPlayerInfo> {
   const db = await getMongoose();
   const playerInfo = new db.PlayerInfo({
     position: {
@@ -136,7 +136,8 @@ export default async function createPlayerInfo(demoFile: DemoFile, player: Playe
     tick: demoFile.currentTick,
     bulletsInMagazine: player.weapon?.clipAmmo,
     weapon: player.weapon?.className,
-    placeName: player.placeName
+    placeName: player.placeName,
+    type
   });
 
   await playerInfo.save();
