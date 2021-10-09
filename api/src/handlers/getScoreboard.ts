@@ -9,6 +9,7 @@ interface IPlayerOnScoreboard {
   deaths: number
   id: string
   team: string
+  name: string
 }
 
 const handler: Handler = async function getScoreboard(event: APIGatewayEvent, context: Context) {
@@ -36,7 +37,8 @@ const handler: Handler = async function getScoreboard(event: APIGatewayEvent, co
       kills: 0,
       deaths: 0,
       id: p._id,
-      team: t._id
+      team: t._id,
+      name: p.name ? p.name : p._id
     };
   }));
 
@@ -55,8 +57,13 @@ function getScores(match: IMatch, scoreboard: Record<string, IPlayerOnScoreboard
       continue;
     }
     for (const kill of round.kills) {
-      scoreboard[kill.attacker.player as unknown as string].kills++;
-      scoreboard[kill.victim.player as unknown as string].deaths++;
+      if (kill.attacker.player) {
+        scoreboard[kill.attacker.player as unknown as string].kills++;
+      }
+
+      if (kill.victim.player) {
+        scoreboard[kill.victim.player as unknown as string].deaths++;
+      }
     }
   }
 

@@ -49,6 +49,9 @@ export class API extends Construct {
     const scoreboard = match.addResource("scoreboard");
     scoreboard.addMethod('GET', scoreboardLambda.integration);
 
+    const fullMatchLambda = new BantrLambda({ api, vpc, name: 'getFullMatch', scope })
+    const fullMatch = match.addResource("full");
+    fullMatch.addMethod('GET', fullMatchLambda.integration);
 
     const killLambda = new BantrLambda({ api, vpc, name: 'getKill', scope })
     const kill = api.root.addResource('kill')

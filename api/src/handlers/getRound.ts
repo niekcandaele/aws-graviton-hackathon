@@ -17,12 +17,19 @@ const handler: Handler = async function getRound(event: APIGatewayEvent, context
     .deepPopulate(
       [
         'kills.attacker',
+        'kills.attacker.player',
         'kills.victim',
+        'kills.victim.player',
         'bombStatusChanges.player',
+        'bombStatusChanges.player.player',
         'chickenDeaths.attacker',
+        'chickenDeaths.attacker.player',
         'grenades.attacker',
+        'grenades.attacker.player',
         'playerBlinds.attacker',
-        'playerBlinds.victim'
+        'playerBlinds.attacker.player',
+        'playerBlinds.victim',
+        'playerBlinds.victim.player'
 ]
     );
 
