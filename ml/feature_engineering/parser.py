@@ -3,32 +3,40 @@ from bson.objectid import ObjectId
 from pymongo import ASCENDING
 
 """
-pi = playerInfo
+pi = player info
 """
+
+collections = get_collections()
 
 
 class Team:
     def __init__(self, team_id):
         self.id = team_id
-        self.player_ids = get_collections()["teams"].find_one(
+        self.player_ids = collections["teams"].find_one(
             {"_id": ObjectId(team_id)}, {"players": 1, "_id": 0})["players"]
 
 
 class Round:
-    def __init__(self, round_id, team_1_id):
-        self.collections = get_collections()
+    def __init__(self, round_id, team1_id, tick):
         self.round_id = round_id
-        self.team_1 = Team(team_1_id)
+        self.team1 = Team(team1_id)
+
+        # Parse all data that is less than this tick.
+        self.tick = tick
 
     def kills_and_deaths(self):
-
-        death_count = 0
-        kill_count = 0
-        kill_ids = self.collections["rounds"].find_one({"_id": ObjectId(self.round_id)}, {"kills": 1})["kills"]
+        death_count, kill_count = 0
+        kill_ids = collections["rounds"].find_one({"_id": ObjectId(self.round_id)}, {"kills": 1})["kills"]
 
         for kill_id in list(kill_ids):
-            victim_pi_id = self.collections["playerkills"].find_one({"_id": kill_id}, {"victim": 1})["victim"]
-            if self.collections["playerinfos"].find_one({"_id": victim_pi_id}, {"player": 1})["player"] in self.team_1.player_ids:
+            victim_pi_id = collections["playerkills"].find_one({"_id": kill_id, "tick": {"$lte": self.tick}}, {"victim": 1})["victim"]
+            victim_pi = collections["playerinfos"].find_one({"_id": victim_pi_id}, {"player": 1})
+
+            # Sometimes a playerInfo does not contain a player field. We just ignore that case.
+            if "player" not in victim_pi:
+                continue
+
+            if victim_pi["player"] in self.team1.player_ids:
                 death_count += 1
             else:
                 kill_count += 1
@@ -36,14 +44,26 @@ class Round:
         return kill_count, death_count
 
     def is_first_blood(self):
-        kill_ids = self.collections["rounds"].find_one({"_id": ObjectId(self.round_id)}, {"kills": 1})["kills"]
+        kill_ids = collections["rounds"].find_one({"_id": ObjectId(self.round_id)}, {"kills": 1})["kills"]
+
         # Get the player info from the first kill based on lowest tick.
-        victim_pi_id = list(self.collections["playerkills"].find({"_id": {"$in": kill_ids}}, {"victim": 1, "tick": 1}).sort([("tick", ASCENDING)]).limit(1))[0]["victim"]
-        player_id = self.collections["playerinfos"].find_one({"_id": ObjectId(victim_pi_id)}, {"player": 1})["player"]
-        return 0 if player_id in self.team_1.player_ids else 1
+        victim_pi_id = list(collections["playerkills"]
+                            .find({"_id": {"$in": kill_ids, "tick": {"$lte": self.tick}}}, {"victim": 1, "tick": 1})  # get kills
+                            .sort([("tick", ASCENDING)])                                 # order from low to high
+                            .limit(1))[0]["victim"]                                      # get the top row
+
+        victim_pi = collections["playerinfos"].find_one({"_id": ObjectId(victim_pi_id)}, {"player": 1})
+
+        # We just ignore this case
+        # TODO: We could check the next kill instead.
+        if "player" not in victim_pi:
+            return 0
+
+        # If the playerId from the victim is part of team_1 we did NOT make the first blood.
+        return 0 if victim_pi["player"] in self.team1.player_ids else 1
 
     def is_win(self):
-        return 0 if self.collections["rounds"].find_one({"_id": self.round_id}, {"winningTeam": 1})["winningTeam"] == self.team_1.id else 1
+        return 0 if collections["rounds"].find_one({"_id": self.round_id}, {"winningTeam": 1})["winningTeam"] == self.team1.id else 1
 
     def equipment_value_ratio():
         # TODO:
