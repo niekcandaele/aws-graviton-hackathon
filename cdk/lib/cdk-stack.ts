@@ -15,6 +15,7 @@ import { FaceitScraper } from './faceitScraper';
 import { Frontend } from './frontend';
 import { Mongo } from './MongoStack';
 import { QueueProcessor } from './queueProcessor';
+import { StatsCalculator } from './statsCalculator';
 
 export class CdkStack extends cdk.Stack {
   constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps) {
@@ -64,5 +65,6 @@ export class CdkStack extends cdk.Stack {
     const faceitScraper = new FaceitScraper(this, 'FaceitScraper', {ECRRepos,bucket,cluster})
     const api = new API(this, 'API', {vpc})
     const frontend = new Frontend(this, 'Frontend')
+    const statsCalculator = new StatsCalculator(this, 'StatsCalculator', {table: dynamoDb.statsTable, cluster, ECRRepos, vpc})
   }
 }

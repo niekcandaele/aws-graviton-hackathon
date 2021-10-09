@@ -223,6 +223,7 @@ export interface Player2 {
   _id: string;
   steamId: string;
   __v: number;
+  name?: string
 }
 
 export interface Team {

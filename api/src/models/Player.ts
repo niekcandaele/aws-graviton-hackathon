@@ -5,11 +5,13 @@ import mongoose from 'mongoose';
 export interface IPlayer extends Document {
   steamId: string
   rank: number
+  name?: string
 }
 
 export const PlayerSchema = new Schema<IPlayer>({
   steamId: String,
   rank: Number,
+  name: String
 })
 
 
