@@ -11,6 +11,7 @@ import { Construct } from '@aws-cdk/core';
 export class ECRStack extends Construct{
   tmpContainerRepository: ecr.Repository;
   faceitScraperRepository: ecr.Repository;
+  statsCalculatorRepository: ecr.Repository;
   constructor(scope: cdk.Construct, id: string) {
     super(scope, id);
 
@@ -26,9 +27,13 @@ export class ECRStack extends Construct{
     faceitScraperRepository.addLifecycleRule({maxImageCount: 3})
     faceitScraperRepository.grantPullPush(githubUser)
 
+    const statsCalculatorRepository = new ecr.Repository(this, 'statsCalculatorRepository');
+    statsCalculatorRepository.addLifecycleRule({maxImageCount: 3})
+    statsCalculatorRepository.grantPullPush(githubUser)
 
     this.tmpContainerRepository = tmpContainerRepository;
     this.faceitScraperRepository = faceitScraperRepository;
+    this.statsCalculatorRepository = statsCalculatorRepository 
   }
 
 
