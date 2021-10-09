@@ -17,19 +17,19 @@ class Team:
 
 
 class Round:
-    def __init__(self, round_id, team1_id, tick):
+    def __init__(self, round_id, team1_id, max_tick):
         self.round_id = round_id
         self.team1 = Team(team1_id)
 
         # Parse all data that is less than this tick.
-        self.tick = tick
+        self.max_tick = max_tick
 
     def kills_and_deaths(self):
         death_count, kill_count = 0
         kill_ids = collections["rounds"].find_one({"_id": ObjectId(self.round_id)}, {"kills": 1})["kills"]
 
         for kill_id in list(kill_ids):
-            victim_pi_id = collections["playerkills"].find_one({"_id": kill_id, "tick": {"$lte": self.tick}}, {"victim": 1})["victim"]
+            victim_pi_id = collections["playerkills"].find_one({"_id": kill_id, "tick": {"$lte": self.max_tick}}, {"victim": 1})["victim"]
             victim_pi = collections["playerinfos"].find_one({"_id": victim_pi_id}, {"player": 1})
 
             # Sometimes a playerInfo does not contain a player field. We just ignore that case.
@@ -48,7 +48,7 @@ class Round:
 
         # Get the player info from the first kill based on lowest tick.
         victim_pi_id = list(collections["playerkills"]
-                            .find({"_id": {"$in": kill_ids, "tick": {"$lte": self.tick}}}, {"victim": 1, "tick": 1})  # get kills
+                            .find({"_id": {"$in": kill_ids, "tick": {"$lte": self.max_tick}}}, {"victim": 1, "tick": 1})  # get kills
                             .sort([("tick", ASCENDING)])                                 # order from low to high
                             .limit(1))[0]["victim"]                                      # get the top row
 
