@@ -39,8 +39,8 @@ export default function Scoreboard(props: IScoreboardProps) {
   const columns = [
     {
       title: 'Player',
-      dataIndex: 'id',
-      key: 'id',
+      dataIndex: 'name',
+      key: 'name',
     },
     {
       title: 'Kills',
