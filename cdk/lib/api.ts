@@ -45,13 +45,18 @@ export class API extends Construct {
     const match = matches.addResource("{id}");
     match.addMethod('GET', matchLambda.integration);
 
+    const scoreboardLambda = new BantrLambda({ api, vpc, name: 'getScoreboard', scope })
+    const scoreboard = match.addResource("scoreboard");
+    scoreboard.addMethod('GET', scoreboardLambda.integration);
+
+
     const killLambda = new BantrLambda({ api, vpc, name: 'getKill', scope })
     const kill = api.root.addResource('kill')
     const killId = kill.addResource('{id}')
     killId.addMethod('GET', killLambda.integration);
 
     const roundLambda = new BantrLambda({ api, vpc, name: 'getRound', scope })
-    const round = api.root.addResource('round')
+    const round = api.root.addResource('rounds')
     const roundId = round.addResource('{id}')
     roundId.addMethod('GET', roundLambda.integration);
 

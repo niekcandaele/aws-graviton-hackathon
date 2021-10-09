@@ -13,55 +13,8 @@ const handler: Handler = async function getMatches(event: APIGatewayEvent, conte
 
   const { Match } = await getMongoose();
   const match = await Match.findById(id)
-    /*     .populate('rounds')
+        .populate('rounds')
         .populate('teams')
-        .populate({
-          path: 'rounds',
-          populate: [{
-            path: 'kills',
-            model: 'PlayerKill'
-          },
-          {
-            path: 'bombStatusChanges',
-            model: 'BombStatusChange'
-          },
-          {
-            path: 'chickenDeaths',
-            model: 'ChickenDeath'
-          },
-          {
-            path: 'grenades',
-            model: 'Grenade'
-          },
-          {
-            path: 'playerHurts',
-            model: 'PlayerHurt'
-          },
-          {
-            path: 'playerBlinds',
-            model: 'PlayerBlind'
-          },
-          {
-            path: 'winningTeam',
-            model: 'Team'
-          }]
-        }); */
-
-    // @ts-expect-error cba fixing this types thing, the plugin gets loaded but the types don't match
-    .deepPopulate(
-      [
-        'teams.players',
-        'rounds.kills.attacker',
-        'rounds.kills.victim',
-        'rounds.bombStatusChanges.player',
-        'rounds.chickenDeaths.attacker',
-        'rounds.grenades.attacker',
-//        'rounds.playerHurts.attacker',
-//        'rounds.playerHurts.victim',
-        'rounds.playerBlinds.attacker',
-        'rounds.playerBlinds.victim'
-]
-    );
 
   const body = { match };
 
