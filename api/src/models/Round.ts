@@ -1,5 +1,6 @@
 import { Document, Schema } from 'mongoose';
 import mongoose from 'mongoose';
+import deepPopulate from 'mongoose-deep-populate';
 
 import { IBombStatusChange } from './BombStatusChange';
 import { IChickenDeath } from './ChickenDeath';
@@ -43,6 +44,7 @@ export const RoundSchema = new Schema<IRound>({
   winningSide: {type: String, enum: Object.values(TeamType)},
 })
 
+RoundSchema.plugin(deepPopulate(mongoose))
 
 export const Round = mongoose.model<IRound>('Round', RoundSchema);
 

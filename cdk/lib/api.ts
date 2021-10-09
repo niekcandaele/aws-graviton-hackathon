@@ -50,6 +50,11 @@ export class API extends Construct {
     const killId = kill.addResource('{id}')
     killId.addMethod('GET', killLambda.integration);
 
+    const roundLambda = new BantrLambda({ api, vpc, name: 'getRound', scope })
+    const round = api.root.addResource('round')
+    const roundId = round.addResource('{id}')
+    roundId.addMethod('GET', roundLambda.integration);
+
   }
 
 
