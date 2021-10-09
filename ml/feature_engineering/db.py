@@ -15,5 +15,6 @@ def get_collections():
     'teams': get_database()['teams'],
     'bombstatuschanges': get_database()['bombstatuschanges'],
     'playerinfos': get_database()['playerinfos'],
+    'playerkills': get_database()['playerkills'],
     'rounds': get_database()['rounds'],
   }
