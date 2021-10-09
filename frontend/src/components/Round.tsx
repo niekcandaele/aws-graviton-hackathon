@@ -10,7 +10,7 @@ import Loading from './Loading';
 
 const { Panel } = Collapse;
 interface IRound {
-  round: Round;
+  roundId: string;
 }
 
 interface IEvent {
@@ -20,12 +20,25 @@ interface IEvent {
 }
 
 export default function RoundDetails(props: IRound) {
-  const { round } = props;
+  const { roundId } = props;
+  const [round, setRound] = useState<Round>();
+  const [loading, setLoading] = useState(true);
 
-  if (!round) {
-    return <Loading />;
+  useEffect(() => {
+    setLoading(true);
+    const fetchData = async () => {
+      const response = await get(`/rounds/${roundId}`);
+      setRound(response.data.round);
+      setLoading(false);
+    };
+    fetchData();
+  }, []);
+
+
+  if (loading || !round) {
+    return <Loading description="Loading round details"/>;
   }
-
+  
   const events: IEvent[] = [];
 
   round.bombStatusChanges.forEach((bombStatusChange) => {
