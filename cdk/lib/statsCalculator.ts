@@ -40,7 +40,8 @@ export class StatsCalculator extends Construct {
         memoryLimitMiB: 2048,
         environment: {
           MONGO_URI: process.env.MONGODB_URI,
-          MONGO_DB: 'test'
+          MONGO_DB: 'test',
+          DYNAMO_TABLE: table.tableName,
         },
 
       },
