@@ -22,4 +22,4 @@ RUN poetry install --no-interaction --no-ansi
 # Creating folders, and files for a project:
 COPY . /code
 
-ENTRYPOINT [ "python", "-m", "feature_engineering.stats.main" ]
+ENTRYPOINT [ "python", "-m", "runtime.main" ]

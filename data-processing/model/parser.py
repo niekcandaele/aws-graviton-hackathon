@@ -1,7 +1,8 @@
 from abc import abstractclassmethod
-from feature_engineering.db import get_collections
+from ..database.connection import get_collections
 from bson.objectid import ObjectId
 from pymongo import ASCENDING
+from dataclasses import make_dataclass
 import pandas as pd
 
 """
@@ -32,8 +33,16 @@ class Round:
         self.max_tick = max_tick
 
     @abstractclassmethod
-    def get_dataclass():
-        return make_dataclass("Round", [("kills", int), ("deaths", int), ("first_blood", int), ("round_winstreak", int)])
+    def dataclass(self):
+        return make_dataclass("Round", [
+            ("kills", int),
+            ("deaths", int),
+            ("first_blood", int),
+            ("round_winstreak", int),
+            #("bomb_planted", int),
+            # ("terrorist",int),
+            #("defuse_kits", int),
+        ])
 
     def kills_and_deaths(self):
         death_count = kill_count = 0

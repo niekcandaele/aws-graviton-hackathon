@@ -8,6 +8,7 @@ dynamodb = boto3.resource('dynamodb', region_name="eu-west-1")
 
 table = dynamodb.Table(os.getenv('DYNAMO_TABLE', 'Stats'))
 
+
 def getItem(itemName):
     response = table.get_item(
         Key={
@@ -25,9 +26,11 @@ def putItem(itemName, item):
         }
     )
 
+
 def scan():
     response = table.scan()
     return response['Items']
+
 
 def create_table():
     table = dynamodb.create_table(
@@ -51,4 +54,4 @@ def create_table():
         }
     )
 
-    return table    
+    return table
