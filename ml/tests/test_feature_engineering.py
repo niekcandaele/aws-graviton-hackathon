@@ -1,6 +1,7 @@
 from feature_engineering import __version__
 from feature_engineering.stats.gamesPerMap import gamesPerMap
 from feature_engineering.stats.totals import totals
+from feature_engineering.stats.winratePerMap import winratePerMap, WinratePerMap
 
 # These tests dont assert the correct things
 # We'd need to set exact database seeds if we want to do that
@@ -15,5 +16,10 @@ def test_mapBreakdown():
 
 def test_totals():
     result = totals()
-    print(result)
     assert 15 == result    
+
+def test_winrate():
+    cls = WinratePerMap()
+    result = cls.exec()
+    print(result)
+    assert 15 == result        
