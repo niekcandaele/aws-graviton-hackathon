@@ -1,12 +1,19 @@
+from abc import abstractclassmethod
 from feature_engineering.db import get_collections
 from bson.objectid import ObjectId
 from pymongo import ASCENDING
+import pandas as pd
 
 """
 pi = player info
 """
 
 collections = get_collections()
+
+
+def preprocessing(data):
+    # One hot encoding (first blood)
+    return data.join(pd.get_dummies(data.first_blood, prefix="first_blood_")).drop("first_blood", axis=1)
 
 
 class Team:
@@ -24,15 +31,25 @@ class Round:
         # Parse all data that is less than this tick.
         self.max_tick = max_tick
 
-    def kills_and_deaths(self):
-        death_count, kill_count = 0
-        kill_ids = collections["rounds"].find_one({"_id": ObjectId(self.round_id)}, {"kills": 1})["kills"]
+    @abstractclassmethod
+    def get_dataclass():
+        return make_dataclass("Round", [("kills", int), ("deaths", int), ("first_blood", int), ("round_winstreak", int)])
 
-        for kill_id in list(kill_ids):
-            victim_pi_id = collections["playerkills"].find_one({"_id": kill_id, "tick": {"$lte": self.max_tick}}, {"victim": 1})["victim"]
-            victim_pi = collections["playerinfos"].find_one({"_id": victim_pi_id}, {"player": 1})
+    def kills_and_deaths(self):
+        death_count = kill_count = 0
+
+        round_details = collections["rounds"].find_one({"_id": ObjectId(self.round_id)}, {"kills": 1})
+        if "kills" not in round_details:
+            return (0, 0)
+
+        for kill_id in list(round_details["kills"]):
+
+            kill = collections["playerkills"].find_one({"_id": kill_id, "tick": {"$lte": self.max_tick}}, {"victim": 1})
+            if kill is None or "victim" not in kill:
+                continue
 
             # Sometimes a playerInfo does not contain a player field. We just ignore that case.
+            victim_pi = collections["playerinfos"].find_one({"_id": kill["victim"]}, {"player": 1})
             if "player" not in victim_pi:
                 continue
 
@@ -41,18 +58,21 @@ class Round:
             else:
                 kill_count += 1
 
-        return kill_count, death_count
+        return (kill_count, death_count)
 
     def is_first_blood(self):
         kill_ids = collections["rounds"].find_one({"_id": ObjectId(self.round_id)}, {"kills": 1})["kills"]
 
         # Get the player info from the first kill based on lowest tick.
         victim_pi_id = list(collections["playerkills"]
-                            .find({"_id": {"$in": kill_ids, "tick": {"$lte": self.max_tick}}}, {"victim": 1, "tick": 1})  # get kills
-                            .sort([("tick", ASCENDING)])                                 # order from low to high
-                            .limit(1))[0]["victim"]                                      # get the top row
+                            .find({"_id": {"$in": kill_ids}, "tick": {"$lte": self.max_tick}}, {"victim": 1, "tick": 1})  # get kills
+                            .sort([("tick", ASCENDING)])                                                                  # order from low to high
+                            .limit(1))
 
-        victim_pi = collections["playerinfos"].find_one({"_id": ObjectId(victim_pi_id)}, {"player": 1})
+        if len(victim_pi_id) == 0:
+            return None
+
+        victim_pi = collections["playerinfos"].find_one({"_id": ObjectId(victim_pi_id[0]["victim"])}, {"player": 1})
 
         # We just ignore this case
         # TODO: We could check the next kill instead.
