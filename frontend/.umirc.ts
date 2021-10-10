@@ -13,6 +13,7 @@ export default defineConfig({
         {path: '/stats', component: 'stats'},
         {path: '/about', component: 'about'},
         {path: '/match/:id', component: 'match'},
+        {path: '/heatmap', component: 'heatmap'},
       ] 
     },
   ],
