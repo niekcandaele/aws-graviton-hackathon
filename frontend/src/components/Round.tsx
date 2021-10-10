@@ -6,17 +6,20 @@ import { useEffect, useState } from 'react';
 import { Match, Round } from '../../types/match';
 import { calculateScoreboard, IPlayerOnScoreboard } from '../lib/calculateScoreboard';
 import { get } from '../lib/http';
+import HeatmapHandler from './heatmapHandler';
 import Loading from './Loading';
 
 const { Panel } = Collapse;
 interface IRound {
   roundId: string;
+  map: string
 }
 
 interface IEvent {
   time: number;
   description: string;
   icon: string;
+  position: {x: number, y:number, z:number}
 }
 
 export default function RoundDetails(props: IRound) {
@@ -34,11 +37,10 @@ export default function RoundDetails(props: IRound) {
     fetchData();
   }, []);
 
-
   if (loading || !round) {
-    return <Loading description="Loading round details"/>;
+    return <Loading description="Loading round details" />;
   }
-  
+
   const events: IEvent[] = [];
 
   round.bombStatusChanges.forEach((bombStatusChange) => {
@@ -47,12 +49,14 @@ export default function RoundDetails(props: IRound) {
         time: bombStatusChange.tick,
         description: `${bombStatusChange.player.player.name} ${bombStatusChange.status} the bomb.`,
         icon: '💣',
+        position: bombStatusChange.position
       });
     } else {
       events.push({
         time: bombStatusChange.tick,
         description: `${bombStatusChange.player._id} ${bombStatusChange.status} the bomb.`,
         icon: '💣',
+        position: bombStatusChange.position
       });
     }
   });
@@ -62,6 +66,7 @@ export default function RoundDetails(props: IRound) {
       time: kill.tick,
       description: `${kill.attacker.player.name} killed ${kill.victim.player.name} with ${kill.attacker.weapon}`,
       icon: '🔫',
+      position: kill.attacker.position,
     });
   });
 
@@ -70,6 +75,7 @@ export default function RoundDetails(props: IRound) {
       time: grenade.tick,
       description: `${grenade.attacker.player.name} detonated a ${grenade.type} grenade`,
       icon: '💥',
+      position: grenade.position,
     });
   });
 
@@ -78,11 +84,12 @@ export default function RoundDetails(props: IRound) {
       time: chickenDeath.tick,
       description: `${chickenDeath.attacker.player.name} killed a chicken`,
       icon: '🐔',
+      position: chickenDeath.position,
     });
   });
 
   round.playerBlinds.forEach((playerBlind) => {
-    console.log(playerBlind)
+    console.log(playerBlind);
 
     if (!playerBlind.victim.player) {
       return;
@@ -90,8 +97,11 @@ export default function RoundDetails(props: IRound) {
 
     events.push({
       time: playerBlind.tick,
-      description: `${playerBlind.victim.player.name} was blinded by ${playerBlind.attacker.player.name} for ${Math.round(playerBlind.duration * 100) / 100} seconds`,
+      description: `${playerBlind.victim.player.name} was blinded by ${
+        playerBlind.attacker.player.name
+      } for ${Math.round(playerBlind.duration * 100) / 100} seconds`,
       icon: '🔦',
+      position: playerBlind.victim.position,
     });
   });
 
@@ -105,9 +115,18 @@ export default function RoundDetails(props: IRound) {
     );
   });
 
+  const heatmapData = events.filter(e => e.position).map(e => {
+    return [e.position.x, e.position.y, 1];
+  })
+
   return (
-    <Timeline>
-      {eventComponents}
-    </Timeline>
+    <Row gutter={10} justify={'space-around'}>
+      <Col span={6}>
+        <Timeline>{eventComponents}</Timeline>
+      </Col>
+      <Col span={4} style={{marginRight: "20%"}}>
+        <HeatmapHandler canvas="canvas" data={heatmapData} map={props.map}/>
+      </Col>
+    </Row>
   );
 }
