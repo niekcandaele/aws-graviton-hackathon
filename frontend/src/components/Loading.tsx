@@ -14,7 +14,7 @@ interface ILoadingProps {
 export default function Loading(props: ILoadingProps) {
   const style = {
     margin: "auto",
-    width: "50%",
+    width: "100%",
     padding: "10px",
   }
 
