@@ -2,7 +2,7 @@
 name = "feature-engineering"
 version = "0.1.0"
 description = ""
-authors = ["Niek Candaele <niek@candaele.dev>"]
+authors = ["Niek Candaele <niek@candaele.dev>", "Emiel Van Severen <emiel@vanseveren.dev"]
 
 [tool.poetry.dependencies]
 python = ">=3.8,<3.11"

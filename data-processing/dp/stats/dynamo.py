@@ -3,7 +3,7 @@ import boto3
 from dotenv import load_dotenv
 
 load_dotenv()
-#dynamodb = boto3.resource('dynamodb', endpoint_url='http://localhost:8000')
+#dynamodb = boto3.resource('dynamodb', endpoint_url='http://localhost:8000', region_name="eu-west-1")
 dynamodb = boto3.resource('dynamodb', region_name="eu-west-1")
 
 table = dynamodb.Table(os.getenv('DYNAMO_TABLE', 'Stats'))

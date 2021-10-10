@@ -1,4 +1,3 @@
-from .dynamo import getItem, putItem
 from abc import ABC, abstractmethod
 
 

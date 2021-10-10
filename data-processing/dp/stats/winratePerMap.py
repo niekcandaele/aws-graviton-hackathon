@@ -1,6 +1,6 @@
-from ..database.connection import get_collections
-from .base import Stat
-from .dynamo import putItem
+from dp.database.connection import get_collections
+from dp.stats.base import Stat
+from dp.stats.dynamo import putItem
 
 
 def winratePerMap():
