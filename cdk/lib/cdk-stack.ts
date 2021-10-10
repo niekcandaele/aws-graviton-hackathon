@@ -63,7 +63,7 @@ export class CdkStack extends cdk.Stack {
     const demoUpload = new DemoUpload(this, 'DemoUpload', {bucket})
     const mongo = new Mongo(this, 'Mongo', {vpc})
     const faceitScraper = new FaceitScraper(this, 'FaceitScraper', {ECRRepos,bucket,cluster})
-    const api = new API(this, 'API', {vpc})
+    const api = new API(this, 'API', {vpc, statsTable: dynamoDb.statsTable})
     const frontend = new Frontend(this, 'Frontend')
     const statsCalculator = new StatsCalculator(this, 'StatsCalculator', {table: dynamoDb.statsTable, cluster, ECRRepos, vpc})
   }

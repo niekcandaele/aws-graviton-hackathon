@@ -12,6 +12,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@aws-sdk/client-dynamodb": "^3.36.0",
     "@aws-sdk/client-ecs": "^3.33.0",
     "mongoose": "^6.0.7",
     "mongoose-deep-populate": "^3.2.0",
