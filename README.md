@@ -28,13 +28,14 @@ Once the demo file is parsed, all data is written to DocumentDB.
 
 ### Stats
 
-The stats module reads data from DocumentDB and calculates global statistics. We write the results of these calculations to DynamoDB so they can be quickly read by the API. 
+The stats module reads data from DocumentDB and calculates global statistics. We write the results of these calculations to DynamoDB so they can be quickly read by the API.
 
 ### Machine learning
+We made a C-Support Vector classification model to predict the outcome of a round.
+Currently, the model is a binary classification with the states: team1 wins or team1 loses.
 
-We made a ML algorithm that tries to predict the outcome of a round after certain events have happened.
-
-// TODO: Emiel expand on this maybe?
+To train the model demo data is collected from DocumentDB, which is further processed into valid features.
+Periodically, predictions are added to new available data in the documentstore.
 
 ## API
 
