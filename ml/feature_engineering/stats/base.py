@@ -9,6 +9,7 @@ class Stat(ABC):
     def exec(self):
         self.value = self._calculate()
         self._save()
+        return self.value
 
     @abstractmethod
     def _calculate(self):

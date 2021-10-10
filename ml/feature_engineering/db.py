@@ -17,4 +17,7 @@ def get_collections():
     'playerinfos': get_database()['playerinfos'],
     'playerkills': get_database()['playerkills'],
     'rounds': get_database()['rounds'],
+    'chickendeaths': get_database()['chickendeaths'],
+    'playerblinds': get_database()['playerblinds'],
+    'grenades': get_database()['grenades'],
   }
