@@ -2,6 +2,7 @@ import * as apigateway from '@aws-cdk/aws-apigateway';
 import { RestApi } from '@aws-cdk/aws-apigateway';
 import { WebSocketApi, WebSocketStage } from '@aws-cdk/aws-apigatewayv2';
 import { LambdaWebSocketIntegration } from '@aws-cdk/aws-apigatewayv2-integrations';
+import { Table } from '@aws-cdk/aws-dynamodb';
 import { Vpc } from '@aws-cdk/aws-ec2';
 import * as lambda from '@aws-cdk/aws-lambda';
 import { SqsEventSource } from '@aws-cdk/aws-lambda-event-sources';
@@ -12,13 +13,14 @@ import { CfnOutput, Construct } from '@aws-cdk/core';
 
 interface IAPIProps {
   vpc: Vpc,
+  statsTable: Table,
 }
 
 export class API extends Construct {
 
   constructor(scope: cdk.Construct, id: string, props: IAPIProps) {
     super(scope, id);
-    const { vpc } = props;
+    const { vpc, statsTable } = props;
 
     const api = new apigateway.RestApi(this, "bantr-api", {
       restApiName: "Bantr API",
@@ -32,7 +34,7 @@ export class API extends Construct {
       throw new Error('Must define the Mongo connection URI');
     }
 
-    const statsLambda = new BantrLambda({ api, vpc, name: 'stats', scope })
+    const statsLambda = new BantrLambda({ api, vpc, name: 'stats', scope, table: statsTable })
     const stats = api.root.addResource("stats");
     stats.addMethod("GET", statsLambda.integration);
 
@@ -72,7 +74,8 @@ interface IBantrLambdaProps {
   name: string,
   scope: cdk.Construct
   vpc: Vpc,
-  api: RestApi
+  api: RestApi,
+  table?: Table
 }
 
 class BantrLambda {
@@ -97,6 +100,11 @@ class BantrLambda {
       requestTemplates: { "application/json": '{ "statusCode": "200" }' },
     });
 
+
+    if (props.table) {
+      props.table.grantReadData(this.lambda);
+      this.lambda.addEnvironment('DYNAMODB_TABLE', props.table.tableName)
+    }
 
   }
 }
