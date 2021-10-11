@@ -17,7 +17,8 @@ def predict():
         round_dataclass = Round.dataclass()
         rounds = list(collections["rounds"].find({"has_predictions": {"$exists": False}}))
 
-        for round in rounds:
+        for index, round in enumerate(rounds):
+            print(f"{index}/{len(rounds)} rounds")
 
             # The teamids are saved in the match, we need this tho :(
             match = list(collections["matches"].find({"rounds": {"$elemMatch": {"$eq": round["_id"]}}}))[0]
@@ -26,16 +27,20 @@ def predict():
             kills = list(collections["playerkills"].find({"_id": {"$in": round["kills"]}}, {"_id": 1, "tick": 1}))
 
             for kill in kills:
-                print(match["teams"][0])
                 parsed_round = Round(round["_id"], match["teams"][0], kill["tick"])
 
                 (kills, deaths) = parsed_round.kills_and_deaths()
+                data = pd.DataFrame([round_dataclass(
+                    kills=kills,
+                    deaths=deaths,
+                    first_blood=parsed_round.is_first_blood(),
+                    round_winstreak=0,
+                    bomb_planted=parsed_round.is_bomb_planted(),
+                    is_terrorist=parsed_round.is_terrorist(),
+                )
+                ])
 
-                data = pd.DataFrame([round_dataclass(kills=kills, deaths=deaths, first_blood=parsed_round.is_first_blood(), round_winstreak=0)])
                 data = preprocessing(data)
-
-                print(data.head())
-
                 predicted_winner = match["teams"][0] if model.predict(data) else match["teams"][1]
 
               # TODO: calculate the certainty
