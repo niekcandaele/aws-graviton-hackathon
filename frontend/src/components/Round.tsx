@@ -22,7 +22,6 @@ interface IRound {
 interface IEvent {
   time: number;
   component: React.ReactNode;
-  description: string;
   icon: string;
   position: { x: number; y: number; z: number };
   prediction?: {
@@ -56,7 +55,6 @@ export default function RoundDetails(props: IRound) {
     if (bombStatusChange.player && bombStatusChange.player.player) {
       events.push({
         time: bombStatusChange.tick,
-        description: `${bombStatusChange.player.player.name} ${bombStatusChange.status} the bomb.`,
         icon: '💣',
         position: bombStatusChange.position,
         component: (<div><Player player={bombStatusChange.player.player} teams={teams} playerInfo={bombStatusChange.player}/> {bombStatusChange.status} the bomb.</div>),
@@ -64,7 +62,6 @@ export default function RoundDetails(props: IRound) {
     } else {
       events.push({
         time: bombStatusChange.tick,
-        description: `${bombStatusChange.status} the bomb.`,
         icon: '💣',
         position: bombStatusChange.position,
         component: `${bombStatusChange.status} the bomb.`,
@@ -83,7 +80,6 @@ export default function RoundDetails(props: IRound) {
 
     events.push({
       time: kill.tick,
-      description: `killed ${kill.victim.player.name} with ${kill.attacker.weapon}`,
       icon: '🔫',
       position: kill.attacker.position,
       prediction: {
@@ -97,7 +93,6 @@ export default function RoundDetails(props: IRound) {
   round.grenades.forEach((grenade) => {
     events.push({
       time: grenade.tick,
-      description: `${grenade.attacker.player.name} detonated a ${grenade.type} grenade`,
       icon: '💥',
       position: grenade.position,
       component: (<div><Player player={grenade.attacker.player} teams={teams} playerInfo={grenade.attacker}/>  detonated a {grenade.type} grenade </div>),
@@ -107,7 +102,6 @@ export default function RoundDetails(props: IRound) {
   round.chickenDeaths.forEach((chickenDeath) => {
     events.push({
       time: chickenDeath.tick,
-      description: `${chickenDeath.attacker.player.name} killed a chicken`,
       icon: '🐔',
       position: chickenDeath.position,
       component: (<div><Player player={chickenDeath.attacker.player} teams={teams} playerInfo={chickenDeath.attacker}/>  killed a chicken </div>),
@@ -121,9 +115,6 @@ export default function RoundDetails(props: IRound) {
 
     events.push({
       time: playerBlind.tick,
-      description: `${playerBlind.victim.player.name} was blinded by ${
-        playerBlind.attacker.player.name
-      } for ${Math.round(playerBlind.duration * 100) / 100} seconds`,
       icon: '🔦',
       position: playerBlind.victim.position,
       component: (<div><Player player={playerBlind.victim.player} teams={teams} playerInfo={playerBlind.victim}/>  was blinded by <Player player={playerBlind.attacker.player} teams={teams} playerInfo={playerBlind.attacker}/>for {Math.round(playerBlind.duration * 100) / 100} seconds</div>),
@@ -137,7 +128,6 @@ export default function RoundDetails(props: IRound) {
 
   events.push({
     time: events[events.length - 1].time + 10,
-    description: `Team ${winningTeam?.name} won the round`,
     icon: '🏆',
     position: { x: 0, y: 0, z: 0 },
     component: `Team ${winningTeam?.name} won the round`,
