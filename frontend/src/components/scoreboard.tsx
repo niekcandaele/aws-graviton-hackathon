@@ -1,15 +1,30 @@
 import { Col, Row, Space, Table, Tag } from 'antd';
 import { Alert, Spin } from 'antd';
+import { Typography } from 'antd';
 import { format, formatDistance, formatRelative, subDays } from 'date-fns';
 import { useEffect, useState } from 'react';
 
 import { Match } from '../../types/match';
-import { calculateScoreboard, IPlayerOnScoreboard } from '../lib/calculateScoreboard';
+import { getTeams } from '../lib/getTeams';
 import { get } from '../lib/http';
 import Loading from './Loading';
 
+const { Title } = Typography;
+
 interface IScoreboardProps {
-  matchId: string
+  match: Match
+}
+
+interface IScoreboard {
+  [key:string]: IPlayerOnScoreboard
+}
+
+interface IPlayerOnScoreboard {
+  kills: number
+  deaths: number
+  id: string
+  team: string
+  name: string
 }
 
 function onlyUnique(value: string, index: number, self: string[]) {
@@ -18,13 +33,13 @@ function onlyUnique(value: string, index: number, self: string[]) {
 
 export default function Scoreboard(props: IScoreboardProps) {
   const [loading, setLoading] = useState(true);
-  const [scoreboard, setScoreboard] = useState({});
-  const { matchId } = props;
+  const [scoreboard, setScoreboard] = useState<IScoreboard>({});
+  const { match } = props;
 
   useEffect(() => {
     setLoading(true);
     const fetchData = async () => {
-      const response = await get(`/matches/${matchId}/scoreboard`);
+      const response = await get(`/matches/${match._id}/scoreboard`);
       setScoreboard(response.data.scoreboard);
       setLoading(false);
     };
@@ -59,14 +74,15 @@ export default function Scoreboard(props: IScoreboardProps) {
   ];
 
   const players: IPlayerOnScoreboard[] = Object.values(scoreboard);
-  const teams = players.map((p) => p.team).filter(onlyUnique);
-  const dataTeam1 = players.filter((p) => p.team === teams[0]);
-  const dataTeam2 = players.filter((p) => p.team === teams[1]);
+  const teams = getTeams(match);
+  const dataTeam1 = players.filter((p) => p.team === teams[0].id);
+  const dataTeam2 = players.filter((p) => p.team === teams[1].id);
 
   return (
     <div>
       <Row gutter={16}>
         <Col span={12}>
+          <Title>{teams[0].name} - {teams[0].score}</Title>
           <Table
             columns={columns}
             dataSource={Object.values(dataTeam1)}
@@ -75,6 +91,7 @@ export default function Scoreboard(props: IScoreboardProps) {
           />
         </Col>
         <Col span={12}>
+          <Title>{teams[1].name} - {teams[1].score}</Title>
           <Table
             columns={columns}
             dataSource={Object.values(dataTeam2)}

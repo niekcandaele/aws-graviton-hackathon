@@ -57,11 +57,11 @@ function getScores(match: IMatch, scoreboard: Record<string, IPlayerOnScoreboard
       continue;
     }
     for (const kill of round.kills) {
-      if (kill.attacker.player) {
+      if (kill.attacker.player && scoreboard[kill.attacker.player as unknown as string]) {
         scoreboard[kill.attacker.player as unknown as string].kills++;
       }
 
-      if (kill.victim.player) {
+      if (kill.victim.player && scoreboard[kill.victim.player as unknown as string]) {
         scoreboard[kill.victim.player as unknown as string].deaths++;
       }
     }

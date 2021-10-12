@@ -107,8 +107,6 @@ export default function HeatmapHandler(props: IHeatmapHandlerProps) {
         const heat = simpleheat(canvas);
         heat.data(updatedData);
         heat.draw();
-        console.log(updatedData);
-        console.log(getRandomPoints(50));
         
       };
     }
@@ -117,7 +115,6 @@ export default function HeatmapHandler(props: IHeatmapHandlerProps) {
   return (
     <div>
       <canvas ref={mapRef} style={{ backgroundImage: `url(${mapImages[props.map]})`, backgroundSize: "50%", backgroundRepeat: 'no-repeat' }} />
-      {/* <canvas ref={heatmapRef} {...props} width="100%" height="100%" /> */}
     </div>
   );
 }
