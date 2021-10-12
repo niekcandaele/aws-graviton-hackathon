@@ -10,10 +10,12 @@ interface IPlayerProps {
   playerInfo?: any;
 }
 
+
+
 export default function Player(props: IPlayerProps) {
   const { player, teams, playerInfo } = props;
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const name = player.name ? player.name : 'Anonymous';
+  const name = getName(player);
 
   const colour = teams.find((team) =>
     team.players.includes(player._id),
@@ -70,4 +72,14 @@ function removeProperty(obj: any, propertyToDelete: string) {
   }
 
   return obj
+}
+
+function getName(player: PlayerType) {
+  if (player.name) {
+    return player.name;
+  }
+  if (player._id) {
+    return player._id.substr(player._id.length - 5);
+  }
+  return 'Unknown';
 }
