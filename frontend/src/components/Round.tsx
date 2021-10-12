@@ -59,7 +59,7 @@ export default function RoundDetails(props: IRound) {
         description: `${bombStatusChange.player.player.name} ${bombStatusChange.status} the bomb.`,
         icon: '💣',
         position: bombStatusChange.position,
-        component: (<div><Player player={bombStatusChange.player.player} teams={teams} /> {bombStatusChange.status} the bomb.</div>),
+        component: (<div><Player player={bombStatusChange.player.player} teams={teams} playerInfo={bombStatusChange.player}/> {bombStatusChange.status} the bomb.</div>),
       });
     } else {
       events.push({
@@ -90,7 +90,7 @@ export default function RoundDetails(props: IRound) {
         team,
         certainty: kill.prediction.certainty,
       },
-      component: (<div> <Player player={kill.attacker.player} teams={teams}/>  killed <Player player={kill.victim.player} teams={teams}/> with {kill.attacker.weapon} </div>),
+      component: (<div> <Player player={kill.attacker.player} teams={teams} playerInfo={kill.attacker}/>  killed <Player player={kill.victim.player} teams={teams} playerInfo={kill.victim}/> with {kill.attacker.weapon} </div>),
     });
   });
 
@@ -100,7 +100,7 @@ export default function RoundDetails(props: IRound) {
       description: `${grenade.attacker.player.name} detonated a ${grenade.type} grenade`,
       icon: '💥',
       position: grenade.position,
-      component: (<div><Player player={grenade.attacker.player} teams={teams}/>  detonated a {grenade.type} grenade </div>),
+      component: (<div><Player player={grenade.attacker.player} teams={teams} playerInfo={grenade.attacker}/>  detonated a {grenade.type} grenade </div>),
     });
   });
 
@@ -110,7 +110,7 @@ export default function RoundDetails(props: IRound) {
       description: `${chickenDeath.attacker.player.name} killed a chicken`,
       icon: '🐔',
       position: chickenDeath.position,
-      component: (<div><Player player={chickenDeath.attacker.player} teams={teams}/>  killed a chicken </div>),
+      component: (<div><Player player={chickenDeath.attacker.player} teams={teams} playerInfo={chickenDeath.attacker}/>  killed a chicken </div>),
     });
   });
 
@@ -126,9 +126,7 @@ export default function RoundDetails(props: IRound) {
       } for ${Math.round(playerBlind.duration * 100) / 100} seconds`,
       icon: '🔦',
       position: playerBlind.victim.position,
-      component: (<div><Player player={playerBlind.attacker.player} teams={teams}/>  {playerBlind.victim.player.name} was blinded by {
-        playerBlind.attacker.player.name
-      } for {Math.round(playerBlind.duration * 100) / 100} seconds</div>),
+      component: (<div><Player player={playerBlind.victim.player} teams={teams} playerInfo={playerBlind.victim}/>  was blinded by <Player player={playerBlind.attacker.player} teams={teams} playerInfo={playerBlind.attacker}/>for {Math.round(playerBlind.duration * 100) / 100} seconds</div>),
     });
 
   });
