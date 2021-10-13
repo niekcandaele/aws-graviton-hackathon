@@ -138,17 +138,20 @@ export default function RoundDetails(props: IRound) {
   });
 
   const eventComponents = events.map((e) => {
-    let prediction;
+    let prediction = null;
+    
     if (e.original && e.original.prediction) {
-      prediction = (
-        <Tooltip title={`${e.original.prediction.certainty * 100}% confidence`}>
-          <span>PREDICTION: {e.original.prediction?.team.name}</span>
-        </Tooltip>
-      );
-    } else {
-      prediction = null;
+      console.log(e.original.prediction);
+      const team = teams.find(t => t.id === e.original.prediction.team_id);
+      if (team) {
+        prediction = (
+          <Tooltip title={`${e.original.prediction.certainty * 100}% confidence`}>
+            <span>PREDICTION: {team.name}</span>
+          </Tooltip>
+        );
+      }
     }
-
+    
     return (
       <Timeline.Item key={e.time} dot={e.icon} label={prediction}>
         {e.component}

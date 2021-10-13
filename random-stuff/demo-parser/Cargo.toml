@@ -1,0 +1,20 @@
+[package]
+name = "demo-parser"
+version = "0.1.0"
+authors= ["Emiel Van Severen <emiel@vanseveren.dev>"]
+edition = "2018"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+protobuf = { version = "2.25.1", features = ["with-bytes"]}
+rusoto_core = "0.47.0"
+rusoto_sqs = "0.47.0"
+rusoto_s3 = "0.47.0"
+tokio = { version = "1.11.0", features = ["full"]}
+mongodb = "2.0.0"
+flate2 = "1.0.22"
+log = "0.4.14"
+
+[build-dependencies]
+protoc-rust = "2.0"
