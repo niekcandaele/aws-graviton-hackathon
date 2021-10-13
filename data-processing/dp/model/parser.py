@@ -71,7 +71,6 @@ class Round:
             [
                 ("kills", int),
                 ("deaths", int),
-                ("first_blood", int),
                 ("round_winstreak", int),
                 ("bomb_planted", int),
                 ("is_terrorist", int),

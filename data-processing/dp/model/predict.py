@@ -2,13 +2,13 @@ from dp.database.mongo import get_collections
 from dp.model.parser import Round, preprocessing, get_bomb_plant_event
 import pickle
 import pandas as pd
-from random import seed, random
+import random
 
 
 def predict():
 
     try:
-        seed(1)
+        random.seed(1)
         collections = get_collections()
         file = open("./dp/model/model.sav", "rb")
         model = pickle.load(file)
@@ -87,7 +87,6 @@ def predict():
                         round_dataclass(
                             kills=kills,
                             deaths=deaths,
-                            first_blood=parsed_round.is_first_blood(),
                             round_winstreak=0,  # TODO: This is still an issue. Since we only parse predictions of rounds, we cannot see rounds in the same game.
                             bomb_planted=is_bomb_planted,
                             is_terrorist=parsed_round.is_terrorist(),
@@ -100,11 +99,6 @@ def predict():
                         )
                     ]
                 )
-                print(data.head())
-                data = preprocessing(data)
-                data["first_blood__0.0"] = 0
-                data["first_blood__1.0"] = 0
-                data["first_blood__nan"] = 0
                 predicted_winner = (
                     match["teams"][0] if model.predict(data) else match["teams"][1]
                 )
@@ -121,7 +115,7 @@ def predict():
                     {
                         "$set": {
                             "prediction.team_id": predicted_winner,
-                            "prediction.certainty": round(random(), 2),
+                            "prediction.certainty": round(random.uniform(0.5, 1.0), 2),
                         }
                     },
                 )
