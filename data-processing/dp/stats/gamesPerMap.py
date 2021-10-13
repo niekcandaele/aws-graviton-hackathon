@@ -1,6 +1,6 @@
-from dp.database.connection import get_collections
+from dp.database.mongo import get_collections
+from dp.database.dynamo import putItem
 from dp.stats.base import Stat
-from dp.stats.dynamo import putItem
 
 
 def gamesPerMap():
