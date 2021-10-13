@@ -9,6 +9,7 @@ import useSound from 'use-sound';
 
 import chickenSfx from '../../public/Rooster-Crow.mp3';
 import { Match } from '../../types/match';
+import { getTeams } from '../lib/getTeams';
 import { get } from '../lib/http';
 
 interface IMatchDetailProps {
@@ -43,6 +44,8 @@ export default function MatchDetails(props: IMatchDetailProps) {
     play();
   };
 
+  const teams = getTeams(match);
+
   return (
     <div>
       <h1>Match details</h1>
@@ -61,7 +64,9 @@ export default function MatchDetails(props: IMatchDetailProps) {
         </Col>
       </Row>
 
-      <Scoreboard matchId={match._id} />
+      <Divider />
+
+      <Scoreboard match={match} />
 
       <Divider />
 
