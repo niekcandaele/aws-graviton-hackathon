@@ -1,15 +1,17 @@
-# umi project
+# Frontend
+
+The frontend is created with React and Umi.
 
 ## Getting Started
 
 Install dependencies,
 
 ```bash
-$ yarn
+$ npm install
 ```
 
 Start the dev server,
 
 ```bash
-$ yarn start
+$ npm run start
 ```
