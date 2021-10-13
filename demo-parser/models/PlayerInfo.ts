@@ -22,6 +22,7 @@ export interface IPlayerInfo extends Document {
   player: IPlayer | undefined
   placeName: string,
   type: string
+  round: string
 }
 
 export const PlayerInfoSchema = new Schema({
@@ -38,7 +39,8 @@ export const PlayerInfoSchema = new Schema({
   position: PositionSchema,
   player: {type: Schema.Types.ObjectId, ref: 'Player'},
   placeName: String,
-  type: String
+  type: String,
+  round: {type: Schema.Types.ObjectId, ref: 'Round'}
 })
 
 

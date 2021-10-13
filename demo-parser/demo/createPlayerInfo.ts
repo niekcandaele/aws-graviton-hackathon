@@ -2,6 +2,7 @@ import { DemoFile, Player, Weapon } from 'demofile';
 
 import { getMongoose } from '../models';
 import { IPlayerInfo } from '../models/PlayerInfo';
+import { IRound } from '../models/Round';
 import { WeaponEnum } from './type/WeaponEnum';
 
 function translateDemoWeaponToEnum(weapon: Weapon | null): WeaponEnum | null {
@@ -118,8 +119,9 @@ function translateDemoWeaponToEnum(weapon: Weapon | null): WeaponEnum | null {
   }
 }
 
-export default async function createPlayerInfo(demoFile: DemoFile, player: Player, type: string): Promise<IPlayerInfo> {
+export default async function createPlayerInfo(demoFile: DemoFile, player: Player, type: string, round: IRound): Promise<IPlayerInfo> {
   const db = await getMongoose();
+
   const playerInfo = new db.PlayerInfo({
     position: {
       x: player.position.x,
@@ -137,7 +139,8 @@ export default async function createPlayerInfo(demoFile: DemoFile, player: Playe
     bulletsInMagazine: player.weapon?.clipAmmo,
     weapon: player.weapon?.className,
     placeName: player.placeName,
-    type
+    type,
+    round: round._id
   });
 
   await playerInfo.save();
