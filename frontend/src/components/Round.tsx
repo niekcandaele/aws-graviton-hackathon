@@ -28,6 +28,7 @@ interface IEvent {
     team: IRichTeam;
     certainty: number;
   };
+  original: any
 }
 
 export default function RoundDetails(props: IRound) {
@@ -58,6 +59,7 @@ export default function RoundDetails(props: IRound) {
         icon: '💣',
         position: bombStatusChange.position,
         component: (<div><Player player={bombStatusChange.player.player} teams={teams} playerInfo={bombStatusChange.player}/> {bombStatusChange.status} the bomb.</div>),
+        original: bombStatusChange
       });
     } else {
       events.push({
@@ -65,6 +67,7 @@ export default function RoundDetails(props: IRound) {
         icon: '💣',
         position: bombStatusChange.position,
         component: `${bombStatusChange.status} the bomb.`,
+        original: bombStatusChange
       });
     }
   });
@@ -82,11 +85,8 @@ export default function RoundDetails(props: IRound) {
       time: kill.tick,
       icon: '🔫',
       position: kill.attacker.position,
-      prediction: {
-        team,
-        certainty: kill.prediction.certainty,
-      },
       component: (<div> <Player player={kill.attacker.player} teams={teams} playerInfo={kill.attacker}/>  killed <Player player={kill.victim.player} teams={teams} playerInfo={kill.victim}/> with {kill.attacker.weapon} </div>),
+      original: kill
     });
   });
 
@@ -96,6 +96,7 @@ export default function RoundDetails(props: IRound) {
       icon: '💥',
       position: grenade.position,
       component: (<div><Player player={grenade.attacker.player} teams={teams} playerInfo={grenade.attacker}/>  detonated a {grenade.type} grenade </div>),
+      original: grenade
     });
   });
 
@@ -105,6 +106,7 @@ export default function RoundDetails(props: IRound) {
       icon: '🐔',
       position: chickenDeath.position,
       component: (<div><Player player={chickenDeath.attacker.player} teams={teams} playerInfo={chickenDeath.attacker}/>  killed a chicken </div>),
+      original: chickenDeath
     });
   });
 
@@ -118,6 +120,7 @@ export default function RoundDetails(props: IRound) {
       icon: '🔦',
       position: playerBlind.victim.position,
       component: (<div><Player player={playerBlind.victim.player} teams={teams} playerInfo={playerBlind.victim}/>  was blinded by <Player player={playerBlind.attacker.player} teams={teams} playerInfo={playerBlind.attacker}/>for {Math.round(playerBlind.duration * 100) / 100} seconds</div>),
+      original: playerBlind
     });
 
   });
@@ -131,14 +134,15 @@ export default function RoundDetails(props: IRound) {
     icon: '🏆',
     position: { x: 0, y: 0, z: 0 },
     component: `Team ${winningTeam?.name} won the round`,
+    original: null
   });
 
   const eventComponents = events.map((e) => {
     let prediction;
-    if (e.prediction) {
+    if (e.original && e.original.prediction) {
       prediction = (
-        <Tooltip title={`${e.prediction.certainty * 100}% confidence`}>
-          <span>PREDICTION: {e.prediction?.team.name}</span>
+        <Tooltip title={`${e.original.prediction.certainty * 100}% confidence`}>
+          <span>PREDICTION: {e.original.prediction?.team.name}</span>
         </Tooltip>
       );
     } else {
