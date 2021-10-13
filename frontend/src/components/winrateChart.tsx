@@ -16,19 +16,19 @@ export default function WinrateChart(props: IMapChartProps) {
           {
             label: 'Terrorists',
             data: props.data.map(d => d.value.TERRORIST),
-            backgroundColor: 'rgb(255,140,0)',
+            backgroundColor: '#ED8F03',
           },
           {
             label: 'Counter terrorists',
             data: props.data.map(d => d.value.COUNTER_TERRORIST),
-            backgroundColor: 'rgb(0,255,255)',
+            backgroundColor: '#2a5298',
           },
         ],
         labels: props.data.map(d => d.label),
       }}
       width={500}
       height={500}
-      options={{ 
+      options={{
         maintainAspectRatio: false,
       }}
     />
