@@ -34,9 +34,9 @@ export default class Blind extends Detector {
       const blindRecord = new PlayerBlind();
 
       blindRecord.tick = this.currentTick;
-      blindRecord.attacker = await createPlayerInfo(this.demoFile, attacker, 'player_blind');
+      blindRecord.attacker = await createPlayerInfo(this.demoFile, attacker, 'player_blind', this.currentRound);
       blindRecord.attacker.player = this.findMatchingPlayer(attacker);
-      blindRecord.victim = await createPlayerInfo(this.demoFile, victim, 'player_blind');
+      blindRecord.victim = await createPlayerInfo(this.demoFile, victim, 'player_blind', this.currentRound);
       blindRecord.victim.player = this.findMatchingPlayer(victim);
       blindRecord.duration = duration;
 

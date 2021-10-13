@@ -44,7 +44,7 @@ export default class Chicken extends Detector {
       chickenDeathRecord.throughWall = !!e.penetrated;
       chickenDeathRecord.whileBlind = e.attackerblind;
 
-      chickenDeathRecord.attacker = await createPlayerInfo(this.demoFile, attacker, 'chicken_death');
+      chickenDeathRecord.attacker = await createPlayerInfo(this.demoFile, attacker, 'chicken_death', this.currentRound);
       chickenDeathRecord.attacker.player = this.findMatchingPlayer(attacker);
 
       this.currentRound.chickenDeaths.push(chickenDeathRecord);

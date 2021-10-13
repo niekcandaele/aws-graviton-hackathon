@@ -41,7 +41,8 @@ export default class PlayerInterval extends Detector {
     this.demoFile.gameEvents.on('round_freeze_end', e => {
       for (const player of this.demoFile.players) {
         if (player.isAlive) {
-          this.playerIntervalSnapshots.push(createPlayerInfo(this.demoFile, player, 'freezetime_end'))
+          this.currentRound
+          this.playerIntervalSnapshots.push(createPlayerInfo(this.demoFile, player, 'freezetime_end', this.currentRound))
         }
       }
     });

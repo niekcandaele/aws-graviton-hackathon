@@ -44,13 +44,13 @@ export default class Kills extends Detector {
       killRecord.throughWall = !!e.penetrated;
       killRecord.whileBlind = e.attackerblind;
 
-      killRecord.attacker = await createPlayerInfo(this.demoFile, attacker, 'kill_attacker');
+      killRecord.attacker = await createPlayerInfo(this.demoFile, attacker, 'kill_attacker', this.currentRound);
       killRecord.attacker.player = this.findMatchingPlayer(attacker);
-      killRecord.victim = await createPlayerInfo(this.demoFile, victim, 'kill_victim');
+      killRecord.victim = await createPlayerInfo(this.demoFile, victim, 'kill_victim', this.currentRound);
       killRecord.victim.player = this.findMatchingPlayer(victim);
 
       if (assister) {
-        killRecord.assister = await createPlayerInfo(this.demoFile, assister, 'kill_assister');
+        killRecord.assister = await createPlayerInfo(this.demoFile, assister, 'kill_assister', this.currentRound);
         killRecord.assister.player = this.findMatchingPlayer(assister);
       }
 
