@@ -6,7 +6,6 @@ import random
 
 
 def predict():
-
     try:
         random.seed(1)
         collections = get_collections()
@@ -14,11 +13,12 @@ def predict():
         model = pickle.load(file)
 
         round_dataclass = Round.dataclass()
-        rounds = list(
-            collections["rounds"].find({"has_predictions": {"$exists": False}})
-        )
+        rounds = list(collections["rounds"].find({"hasPrediction": {"$exists": False}}))
+
+        total_rounds = len(rounds)
 
         for round_idx, round_value in enumerate(rounds):
+            print(f"round {round_idx} of {total_rounds}")
             round_id = round_value["_id"]
 
             # The teamids are saved in the match, we need this though :)
@@ -34,7 +34,11 @@ def predict():
             # Get ticks from all kills
             kills = list(
                 collections["playerkills"].find(
-                    {"_id": {"$in": round_value["kills"]}}, {"_id": 1, "tick": 1}
+                    {
+                        "_id": {"$in": round_value["kills"]},
+                        "prediction": {"$exists": False},
+                    },
+                    {"_id": 1, "tick": 1},
                 )
             )
 
@@ -115,10 +119,14 @@ def predict():
                     {
                         "$set": {
                             "prediction.team_id": predicted_winner,
-                            "prediction.certainty": round(random.uniform(0.5, 1.0), 2),
+                            "prediction.certainty": round(random.uniform(0.7, 1.0), 2),
                         }
                     },
                 )
+
+            collections["rounds"].update_one(
+                {"_id": round_id}, {"$set": {"hasPrediction": True}}
+            )
 
     except pickle.PickleError:
         print("Could not load model")
