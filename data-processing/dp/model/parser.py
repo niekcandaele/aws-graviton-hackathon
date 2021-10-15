@@ -32,9 +32,11 @@ def get_bomb_plant_event(round_id):
 
 def preprocessing(data):
     # One hot encoding (first blood)
-    return data.join(
+    data = data.join(
         pd.get_dummies(data.first_blood, prefix="first_blood_", dummy_na=True)
-    ).drop("first_blood", axis=1)
+    )
+    data = data.drop("first_blood", axis=1)
+    return data
 
 
 class Team:
@@ -69,7 +71,6 @@ class Round:
             [
                 ("kills", int),
                 ("deaths", int),
-                ("first_blood", int),
                 ("round_winstreak", int),
                 ("bomb_planted", int),
                 ("is_terrorist", int),
