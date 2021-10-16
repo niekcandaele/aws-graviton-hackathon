@@ -6,5 +6,5 @@ from dp.model.predict import predict
 # - Predict winner at certain events in newly processed rounds.
 
 if __name__ == "__main__":
-    predict()
     calculate_stats()
+    predict()

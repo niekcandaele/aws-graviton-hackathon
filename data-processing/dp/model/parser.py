@@ -84,6 +84,7 @@ class Round:
         )
 
     def map_winrate(self):
+        print(f"Map: {self.map}")
         winrate_details = getItem(f"mapwinrate_{self.map}")["data"]
         ct_wins = winrate_details["COUNTER_TERRORIST"]
         t_wins = winrate_details["TERRORIST"]
